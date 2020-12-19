@@ -3,7 +3,7 @@
 #import
 library(jsonlite)
 
-#url exemple
+#url exemple, testing
 annee2Read<-2013
 urlRATP<-"https://dataratp2.opendatasoft.com/api/records/1.0/search/?dataset=qualite-de-lair-mesuree-dans-la-station-franklin-d-roosevelt&q=&rows=10000&sort=-dateheure&facet=dateheure&refine.dateheure=2018"
 dfAux<-fromJSON(urlRATP)
