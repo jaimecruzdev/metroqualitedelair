@@ -8,6 +8,11 @@ library(jsonlite)
 # urlRATP<-"https://dataratp2.opendatasoft.com/api/records/1.0/search/?dataset=qualite-de-lair-mesuree-dans-la-station-franklin-d-roosevelt&q=&rows=10000&sort=-dateheure&facet=dateheure&refine.dateheure=2018"
 # dfAux<-fromJSON(urlRATP)
 
+#path where to write file
+path_2_write="C://Formation IA//CEPE//Projet//QAIR//Data//"
+file_2_write="RATP_qair_2013_2020.csv"
+file_qair_RATP=paste(path_2_write,file_2_write,sep="")
+
 #boucle pour récupérer les données
 urlBase="https://dataratp2.opendatasoft.com/api/records/1.0/search/?dataset=qualite-de-lair-mesuree-dans-la-station-franklin-d-roosevelt&q=&rows=10000&sort=-dateheure&facet=dateheure&refine.dateheure="
 donAnnee=list()
@@ -28,3 +33,18 @@ for (anInd in 2013:2020)
   #print(head(donAnnee[[anInd]]$records$fields),5)
   print(head(donAnnee[[anInd]]),5)
 }
+
+#export to a csv
+# 1. concat to a single df
+# 2. write to a file
+
+# 1. concat to a single df
+df_2_write=data.frame()
+for (anInd in 2013:2020)
+{
+  df_2_write<-rbind(df_2_write,donAnnee[[anInd]])
+}
+
+# 2. write to a file
+write.csv(df_2_write,file_qair_RATP)
+
