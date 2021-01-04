@@ -139,7 +139,12 @@ plot(df$nofra1,df$c2fra1,main="NO2 (μg/m3) / CO2 (ppm) ",col=plot_colors_2,xlab
 legend(title="NO","topright", legend=c("<10 μg/m3","10 - 40 μg/m3","40 - 70 μg/m3","70 - 100 μg/m3","100 - 130 μg/m3",">130 μg/m3"), pch=16, col=levels(plot_colors_2))
 
 plot_colors_3=cut(df$tfra1, breaks = c(-Inf, 0,10,20,30,+Inf), 
-                 labels = c("blue","green","yellow","orange","red"))
+                labels = c("yellow","orange","blue","green","red"))
+
+plot_colors_3
+
+#plot_colors_3=cut(df$tfra1, breaks = c(-Inf, 0,10,20,30,+Inf), 
+#                 labels = c("yellow","orange","blue","green","red"))
 plot(df$X10fra1,df$c2fra1,col=plot_colors_3,main="Particules fines (μg/m3) / CO2 (ppm)",xlab="Particules fines (μg/m3)",ylab="CO2 (ppm) ")
 legend(title="Température","topright", legend=c("<0 (ºC)","0 - 10 (ºC)","10 - 20(ºC)","20 - 30(ºC)",">30 (ºC)"), pch=16, col=levels(plot_colors_3))
 
