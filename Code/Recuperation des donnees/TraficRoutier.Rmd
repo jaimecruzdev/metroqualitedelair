@@ -1,0 +1,84 @@
+---
+title: "TraficRoutier"
+author: "Gab"
+date: "23/12/2020"
+output: html_document
+---
+
+```{r}
+install.packages("jsonlite")
+install.packages("tidyverse")
+library(jsonlite)
+library(tidyverse)
+library(lubridate)
+```
+
+
+### Récupération des données de trafic
+
+```{r}
+urlT <- "https://parisdata.opendatasoft.com/api/records/1.0/search/?dataset=comptages-routiers-permanents&q=&lang=fr&rows=10000"
+
+#liste des stations à récupérer sur ParisOuest (cf. slide)
+ParisOuest <- c("5436", "5435", "4562", "4549", "4532", "4561", "6845", "6846", "7181", "7182", "5401", "5402", "4596", "4599", "4324", "4326", "4377", "323", "324", "325", "326", "6757", "6758", "279", "223", "224", "4279", "4281", "6018", "6019", "4220", "4382", "4373", "4375", "6268", "6269", "6836", "6837", "7175", "7176", "7055", "7069", "5416", "5417", "5545", "5276", "5278", "5269", "5548", "5261", "6139", "5308", "5316", "5262", "4503", "4504")
+
+#choix de la période et formatage des dates en "yyyy-mm-ddThh:mm:ss+tz"
+jour <- ymd(20191201:20201230) #période de collecte, date début/fin
+jour <- na.exclude(jour)
+jour <- rep(jour[], each=24)          #préparation de 24 ligne par jour
+heure <- c(paste0("0", 0:9), 10:23)   #parce que le format est T01 et non T1
+jourheure <- paste0(jour, "T", heure, ":00:00+00:00")
+dfTotal <- as_tibble(jourheure)
+colnames(dfTotal) <- "t_1h"    #nomage de la colonne dateheure pour join ensuite
+
+i <- 1
+while (!is.na(ParisOuest[i])) {   #boucle sur les stations de mesure
+  iu_ac <- ParisOuest[i]
+  #urlq <- paste0("&refine.t_1h=", jour, "&refine.iu_ac=", iu_ac)
+  urlq <- paste0("&refine.iu_ac=", iu_ac)
+  url <- paste0(urlT, urlq)
+  print(url)
+  liste <- fromJSON(url)
+  df <- as_tibble(liste$records$fields)
+
+#test sur les colonnes disponibles, car certains sites n'ont pas les variables 'q' et 'k' qui nous intéressent. Ces sites sont alors ignorés.
+testCol <- variable.names(df)
+if(is.na(match("q", testCol)))
+{
+  i <- i+1
+  print(paste("Le site :", iu_ac, "ne contient pas la variable q"))
+  next}
+if(is.na(match("k", testCol)))
+{
+  i <- i+1
+  print(paste("Le site :", iu_ac, "ne contient pas la variable k"))
+  next}
+
+#ajout des variables dans le tibble final, avec comme clef la date+heure
+dfTotal <- left_join(dfTotal, select(df, t_1h, q, k, etat_trafic), by="t_1h")
+
+#pour identifier les variables q, k, etat_trafic avec le site
+#préparation du nom des colonnes
+colq <- paste('q', iu_ac, sep = '-')#iu_ac est l'identifiant du point de mesure
+colk <- paste('k', iu_ac, sep = '-')
+cole <- paste('e', iu_ac, sep = '-')
+
+NomCol <- colnames(dfTotal)   #récuppérer le nomage actuel des colonnes
+  idq <- match("q", NomCol)   #récuppérer les index des colonnes des variables
+  idk <- match("k", NomCol)   #pour ensuite les renomer
+  ide <- match("etat_trafic", NomCol)
+
+#renomage des colonnes avec l'id du point de mesure pour chaque variable
+colnames(dfTotal) <- replace(NomCol, c(idq, idk, ide), c(colq, colk, cole))
+  i <- i+1
+}
+```
+
+
+### écriture dans un fichier résultats
+```{r}
+write_csv(dfTotal, "trafic.csv")
+
+```
+
+
