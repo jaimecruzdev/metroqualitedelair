@@ -1,0 +1,75 @@
+---
+title: "AirQualPolEx2"
+author: "Gab"
+date: "05/01/2021"
+output: html_document
+---
+
+### création d'un tibble à partir de 3 fichiers, 1 par polluant
+
+```{r}
+#liste des fichiers à récupérer pour les mesures no2, o3, pm10
+#les stations et id:
+#PARIS Centre - 4143
+#Rue Bonaparte - 4071
+#PARIS stade Lenflen - 4179
+#Bld Périphérique Est - 4329
+#LOGNES - 4098
+#
+
+fichiers <- c("mes_idf_horaire_pm10.csv", "mes_idf_horaire_no2.csv", "mes_idf_horaire_o3.csv")
+
+#choix de la période et formatage des dates en "yyyy-mm-ddThh:mm:ss+tz"
+jour <- ymd(20170901:20201231) #période de collecte, date début/fin
+jour <- na.exclude(jour)
+jour <- str_replace_all(jour, "-", "/")
+jour <- rep(jour[], each=24)          #préparation de 24 ligne par jour
+heure <- c(paste0("0", 0:9), 10:23)   #parce que le format est T01 et non T1
+jourheure <- paste0(jour, " ", heure, ":00:00+00")
+dfPolEx <- as_tibble(jourheure)
+colnames(dfPolEx) <- "date_debut"    #nomage de la colonne dateheure pour join ensuite
+
+for (f in fichiers) {
+  print(f)
+  df <- read_csv(f)
+  df <- select(df, date_debut, nom_station, nom_poll, valeur, statut_valid)
+  polluant <- df$nom_poll[1]     #récupère le nom du polluant pour ajouter dans titre colonne
+  stations <- c("PARIS Centre", "PARIS stade Lenglen", "Bld Périphérique Est")
+  for (s in stations) {
+      df1 <- filter(df, statut_valid==1 & nom_station==s)
+      print(s)
+      #corrélation pour ajouter au tibble final une colonne valeur pour cette station et ce polluant
+      dfPolEx <- left_join(dfPolEx, select(df1, date_debut, valeur), by="date_debut")
+      #renomage colonnes
+      NomCol <- colnames(dfPolEx)   #récuppère le nomage actuel des colonnes
+      idcol <- match("valeur", NomCol)  #récuppère l'index de la colonne valeur pour ensuite la renomer avec le nom de la station et du polluant
+      titrecol <- paste(s, polluant)
+      colnames(dfPolEx) <- replace(NomCol, idcol, titrecol)
+      
+  }#fin boucle sur station
+}#fin boucle sur fichier par polluant
+
+#après corrélation formatage 
+dfPolEx <- mutate(dfPolEx, date_debut=as.POSIXct(date_debut, origin = "1970-01-01", tz= "GMT"))
+```
+
+
+### savegarde du résultat dans un fichier
+```{r}
+write_csv(dfPolEx, "PollutionExterieure2.csv")
+
+```
+
+### exploration des données en vue de vérifier la présence de NAs
+```{r}
+plot(dfPolEx$date_debut, dfPolEx$`PARIS Centre NO2`)
+```
+
+Absence de données pour Paris Centre NO2 à partir de
+```{r}
+filter(dfPolEx, dfPolEx$`PARIS Centre NO2`!="NA") %>% max(dfPolEx$date_debut)
+```
+
+
+
+
