@@ -32,7 +32,7 @@ lecture_qair_ratp<-function()
   PREP_DATA_FILE<-"RATP_qair_2013_2020.csv"
   
   #### Lecture du fichier correspondant ####
-  fichier_donnees=paste(PREP_DATA_PATH,DATA_FILE,sep="/")
+  fichier_donnees=paste(PREP_DATA_PATH,PREP_DATA_FILE,sep="/")
   print(fichier_donnees)
   df<-read.csv(fichier_donnees)
   
@@ -61,7 +61,7 @@ ecriture_qair_ratp<-function(df)
   CT_PATH_DATA_WT_PREP<-CT_PATH_DATA_PREP
   CT_FILE_RATP_PREP<-"RATP_qair_2013_2020_Prep.csv"
   
-  #### Lecture du fichier correspondant ####
+  #### Ecriture du fichier correspondant ####
   fichier_donnees=paste(CT_PATH_DATA_WT_PREP,CT_FILE_RATP_PREP,sep="/")
   write.csv(df,fichier_donnees,row.names=F)
 }

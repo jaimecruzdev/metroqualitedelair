@@ -6,7 +6,7 @@ explore_heures_RATP<-function()
   DATA_FILE="RATP_qair_2013_2020.csv"
   
   fichier_donnees=paste(DATA_PATH,DATA_FILE,sep="")
-  df<-read.csv(fichier_donnees)
+  df<-read.csv(fichier_donnees,sep=";")
   
   df
   
