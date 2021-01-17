@@ -72,8 +72,10 @@ load_symbols<-function()
   CT_FICHIER_5<<-c("Explorer Heures RATP.r",CT_PATH_CODE_EXPL)
   CT_FICHIER_6<<-c("PrepareDateHeuresRATP.r",CT_PATH_CODE_PREP)
   CT_FICHIER_7<<-c("InterpolationMeteo.r",CT_PATH_CODE_PREP)
+  CT_FICHIER_8<<-c("QairExtDuJourAuxHeures.R",CT_PATH_CODE_PREP)
+  CT_FICHIER_9<<-c("CorrelationQuatreSources.r",CT_PATH_CODE_PREP)
   
-  CT_LIST_FICHIERS<<-list(CT_FICHIER_1,CT_FICHIER_2,CT_FICHIER_3,CT_FICHIER_4,CT_FICHIER_5,CT_FICHIER_6,CT_FICHIER_7)
+  CT_LIST_FICHIERS<<-list(CT_FICHIER_1,CT_FICHIER_2,CT_FICHIER_3,CT_FICHIER_4,CT_FICHIER_5,CT_FICHIER_6,CT_FICHIER_7,CT_FICHIER_8,CT_FICHIER_9)
 }
 
 ###################
@@ -143,7 +145,9 @@ explor_prev_des_donnees <-function()
 preparation_des_donnees <-function()
 {
   #prepar_qair_ratp()
-  interpolation_meteo()
+  #interpolation_meteo()
+  etendreHeuresQairExt()
+  join_all_sources()
 }
 
 #############################
