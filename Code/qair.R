@@ -34,6 +34,8 @@ load_import<-function()
   
   library(tidyverse)
   library(zoo)
+  library(plyr)
+  library(data.table)
 }
 
 ############################################
@@ -48,7 +50,7 @@ load_symbols<-function()
   #Modules fonctionnelles à exécuter
   CT_EXE_RECUP_DONNEES<<-FALSE
   CT_EXE_EX_PR_DONNEES<<-FALSE
-  CT_EXE_PREP_DONNEES<<-TRUE
+  CT_EXE_PREP_DONNEES<<-FALSE
   CT_EXE_EXPLR_DONNEES<<-FALSE
   CT_EXE_MODEL_DONNEES<<-FALSE
   
@@ -74,8 +76,9 @@ load_symbols<-function()
   CT_FICHIER_7<<-c("InterpolationMeteo.r",CT_PATH_CODE_PREP)
   CT_FICHIER_8<<-c("QairExtDuJourAuxHeures.R",CT_PATH_CODE_PREP)
   CT_FICHIER_9<<-c("CorrelationQuatreSources.r",CT_PATH_CODE_PREP)
+  CT_FICHIER_10<<-c("Explore base merge.R",CT_PATH_CODE_EXPL)
   
-  CT_LIST_FICHIERS<<-list(CT_FICHIER_1,CT_FICHIER_2,CT_FICHIER_3,CT_FICHIER_4,CT_FICHIER_5,CT_FICHIER_6,CT_FICHIER_7,CT_FICHIER_8,CT_FICHIER_9)
+  CT_LIST_FICHIERS<<-list(CT_FICHIER_1,CT_FICHIER_2,CT_FICHIER_3,CT_FICHIER_4,CT_FICHIER_5,CT_FICHIER_6,CT_FICHIER_7,CT_FICHIER_8,CT_FICHIER_9,CT_FICHIER_10)
 }
 
 ###################
@@ -136,7 +139,7 @@ recuperation_des_donnees <-function()
 explor_prev_des_donnees <-function()
 {
   #explorer_qair_RATP()
-  explore_heures_RATP()
+  #explore_heures_RATP()
 }
 
 #############################
@@ -144,8 +147,8 @@ explor_prev_des_donnees <-function()
 ############################
 preparation_des_donnees <-function()
 {
-  #prepar_qair_ratp()
-  #interpolation_meteo()
+  prepar_qair_ratp()
+  interpolation_meteo()
   etendreHeuresQairExt()
   join_all_sources()
 }
@@ -155,6 +158,7 @@ preparation_des_donnees <-function()
 ############################
 exploration_des_donnees <-function()
 {
+  explorer_NAs()
 }
 
 #############################
