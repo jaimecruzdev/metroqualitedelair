@@ -17,7 +17,7 @@ explorer_NAs<-function()
     valNA <- sapply(df,function(x) sum(is.na(x)))
     txNA  <- valNA / nrow(df)*100 # Tout est OK avec les dates et calendrier on ne va pas les repr?senter
 
-  show_var_missing_values<-function(var_name,printTOrPlotF=TRUE)
+  show_var_missing_values2<-function(var_name,printTOrPlotF=TRUE)
   {
     nulls_per_year_month<-table(df[is.na(df[var_name]),colnames(df)[4]] %>% substr(1,7))
   
@@ -34,13 +34,13 @@ explorer_NAs<-function()
 
   for (col_var in colnames(df)[-c(1:18)])
   {
-    show_var_missing_values(col_var)
+    show_var_missing_values2(col_var)
   }
     
   #plot
   for (col_var in colnames(df)[-c(1:18)])
   {
-    show_var_missing_values(col_var,FALSE)
+    show_var_missing_values2(col_var,FALSE)
   }
 
 }
