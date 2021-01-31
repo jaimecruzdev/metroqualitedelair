@@ -1,0 +1,41 @@
+Présentation: 
+------------------
+
+- Description des sources
+- Premières décissions
+- Structuration des fichiers de code et les données
+- Exécution de l'ensemble du projet
+- Interpolation des températures trihoraires
+
+
+Fait: 
+---------
+
+- Terminer le changement des nommes de colonnes en l'écrivant dans un fichier: Morceau de code sur préparation des données
+- Nécessité de continuer avec les explorations et la préparation des données
+- Changer le dossier sans faute d'ortograph "données"
+- Exploration avant de modéliser pour définir une bonne stratégie. 
+
+-------------------
+
+Nous allons plusieurs questions et points à explorer avant de définitivement lancer un modèle cible. Réflexions :
+
+1. Nous prénons le CO2 comme référence cible. Il y a des données entre 2014 et 2019, même s'ils éxistent de trous toute au longue de cette période).
+
+2. Pour voir où l'interpolation a de sense, nous allons explorer la taille des trous (valeur manquantes) des variales. Quand ils sont trop grandes, ça n'a pas de sense. Par contre si nous retrouvons des manques d'une ou deux heures on pourrait les intepoler. 
+
+3. Les températures externes "ext" éxistent entre 2014 et 2017. Nous pourrons tester notre future modèle sans elle entre 2014 et 2019 et avec elles entre 2014 et 2017.
+
+4. Nous pouvons écarter ext_so2 et ext_co parce qu'il n'y a pas assez de données. 
+
+5. Nous pouvons envisager de prédire des pics également.
+
+6. Etant notre cible le CO2 (qui devrait être lié au nombre des personnes, nous porrons envisager également de predire NO2 ou NO.
+
+------------------------
+
+Actions premodel : 
+
+- Changer le texts des congés scolaire et le temps présent même avant de les coder
+- Changes les combinaisons des valeurs dans les congés par zone A,B,C dans une seule. 
+- Filtrer les congés qui ne correspondent pas à Paris

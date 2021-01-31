@@ -59,8 +59,8 @@ load_symbols<-function()
   #Chemins du code
   CT_PATH_CODE<-"Code"
   CT_PATH_CODE_RECUP<<-paste(CT_PATH_CODE,"Recuperation des donnees",sep="/")
-  CT_PATH_CODE_EXPL<<-paste(CT_PATH_CODE,"Exploration des donnes",sep="/")
-  CT_PATH_CODE_PREP<<-paste(CT_PATH_CODE,"Preparation des donnes",sep="/")
+  CT_PATH_CODE_EXPL<<-paste(CT_PATH_CODE,"Exploration des donnees",sep="/")
+  CT_PATH_CODE_PREP<<-paste(CT_PATH_CODE,"Preparation des donnees",sep="/")
   
   #chemins des données
   CT_PATH_DATA<<-"Data"

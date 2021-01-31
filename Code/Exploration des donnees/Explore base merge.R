@@ -6,10 +6,7 @@ explorer_NAs<-function()
     file_data   <- paste(CT_PATH_DATA_PREP,file_2_read,sep="/")
     
     df <- fread(file_data)
-    # on renomme les colonnes meteo
-    setnames(df, c("rr3", "tc", "pres", "dd", "ww", "cod_tend", "ff", "n"),
-              c("pluie_3_heures", "temperature_celsius", "pression", "direction_vent_10mn", "temps_present_num",
-                "type_tendance_barometrique", "vitesse_vent_10mn", "nebulosite_totale"))
+    
     df <- data.frame(df)
     df <- df[,-1]  # Un index en trop qui traine
     

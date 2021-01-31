@@ -49,6 +49,12 @@ join_all_sources<-function()
   dfFinal <- left_join(dfFinal, dfPolExt, by="Timestamp")
   rm(dfPolExt)
   
+  #Changer noms des variables dans le fichier
+  # on renomme les colonnes meteo
+  setnames(dfFinal, c("rr3", "tc", "pres", "dd", "ww", "cod_tend", "ff", "n"),
+           c("pluie_3_heures", "temperature_celsius", "pression", "direction_vent_10mn", "temps_present_num",
+             "type_tendance_barometrique", "vitesse_vent_10mn", "nebulosite_totale"))
+  
   ### savegarde du résultat dans un fichier
   #write.csv(dfFinal,fichier_donnees_out,fileEncoding="UTF-8")
   write.csv(dfFinal,fichier_donnees_out)
