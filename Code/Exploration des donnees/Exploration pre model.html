@@ -11819,47 +11819,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span><span class="s">&quot;tidyverse&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>Warning message:
-&#34;package &#39;tidyverse&#39; was built under R version 3.6.3&#34;-- Attaching packages ------------------------------------------------------------------------------- tidyverse 1.3.0 --
-v ggplot2 3.3.2     v purrr   0.3.4
-v tibble  3.0.4     v dplyr   1.0.2
-v tidyr   1.1.2     v stringr 1.4.0
-v readr   1.4.0     v forcats 0.5.0
-Warning message:
-&#34;package &#39;ggplot2&#39; was built under R version 3.6.3&#34;Warning message:
-&#34;package &#39;tibble&#39; was built under R version 3.6.3&#34;Warning message:
-&#34;package &#39;tidyr&#39; was built under R version 3.6.3&#34;Warning message:
-&#34;package &#39;readr&#39; was built under R version 3.6.3&#34;Warning message:
-&#34;package &#39;purrr&#39; was built under R version 3.6.3&#34;Warning message:
-&#34;package &#39;dplyr&#39; was built under R version 3.6.3&#34;Warning message:
-&#34;package &#39;stringr&#39; was built under R version 3.6.3&#34;Warning message:
-&#34;package &#39;forcats&#39; was built under R version 3.6.3&#34;-- Conflicts ---------------------------------------------------------------------------------- tidyverse_conflicts() --
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -11874,12 +11840,13 @@ x dplyr::lag()    masks stats::lag()
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>DATA_PATH<span class="o">=</span><span class="s">&quot;C://Formation IA//CEPE//Projet//QAIR//Data//Prepared//&quot;</span>
-DATA_FILE_IN<span class="o">=</span><span class="s">&quot;DataCorrelated.csv&quot;</span>
-DATA_FILE_OUT<span class="o">=</span><span class="s">&quot;data_model.csv&quot;</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1">#DATA_PATH=&quot;D://Jaime//Projet//QAIR//Data//Prepared//&quot;</span>
+DATA_PATH<span class="o">&lt;-</span><span class="s">&quot;C://Formation IA//CEPE//Projet//QAIR//Data//Prepared//&quot;</span>
+DATA_FILE_IN<span class="o">&lt;-</span><span class="s">&quot;DataCorrelated.csv&quot;</span>
+DATA_FILE_OUT<span class="o">&lt;-</span><span class="s">&quot;data_model_restant_trous.csv&quot;</span>
 </pre></div>
 
 </div>
@@ -11906,10 +11873,10 @@ DATA_FILE_OUT<span class="o">=</span><span class="s">&quot;data_model.csv&quot;<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>fichier_donnees<span class="o">=</span><span class="kp">paste</span><span class="p">(</span>DATA_PATH<span class="p">,</span>DATA_FILE_IN<span class="p">,</span>sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-r"><pre><span></span>fichier_donnees<span class="o">&lt;-</span><span class="kp">paste</span><span class="p">(</span>DATA_PATH<span class="p">,</span>DATA_FILE_IN<span class="p">,</span>sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<span class="p">)</span>
 </pre></div>
 
@@ -11929,7 +11896,7 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>df
@@ -12052,7 +12019,7 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">head</span><span class="p">(</span>df<span class="p">)</span>
@@ -12103,7 +12070,7 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">nrow</span><span class="p">(</span>df<span class="p">)</span>
@@ -12143,7 +12110,7 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>df<span class="p">)</span>
@@ -12336,10 +12303,12 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span><span class="kp">levels</span><span class="p">(</span>df<span class="o">$</span>Conge_scolaire_raison<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;ete&quot;</span><span class="p">,</span><span class="s">&quot;hiver&quot;</span><span class="p">,</span><span class="s">&quot;hiver&quot;</span><span class="p">,</span><span class="s">&quot;hiver&quot;</span><span class="p">,</span><span class="s">&quot;hiver&quot;</span><span class="p">,</span><span class="s">&quot;hiver&quot;</span><span class="p">,</span><span class="s">&quot;hiver&quot;</span><span class="p">,</span><span class="s">&quot;hiver&quot;</span><span class="p">,</span><span class="s">&quot;Toussaint&quot;</span><span class="p">,</span><span class="s">&quot;Noel&quot;</span><span class="p">,</span><span class="s">&quot;printemps&quot;</span><span class="p">,</span><span class="s">&quot;printemps&quot;</span><span class="p">,</span><span class="s">&quot;printemps&quot;</span><span class="p">,</span><span class="s">&quot;printemps&quot;</span><span class="p">,</span><span class="s">&quot;printemps&quot;</span><span class="p">,</span><span class="s">&quot;printemps&quot;</span><span class="p">,</span><span class="s">&quot;printemps&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1">#levels(df$Conge_scolaire_raison)&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;,&quot;10&quot;,&quot;11&quot;,&quot;12&quot;,&quot;13&quot;,&quot;14&quot;,&quot;15&quot;,&quot;16&quot;,&quot;17&quot;,&quot;&quot;)</span>
+<span class="c1">#levels(df$Conge_scolaire_raison) &lt;- c(&quot;ete&quot;,&quot;hiver&quot;,&quot;hiver&quot;,&quot;hiver&quot;,&quot;hiver&quot;,&quot;hiver&quot;,&quot;hiver&quot;,&quot;hiver&quot;,&quot;Toussaint&quot;,&quot;Noel&quot;,&quot;printemps&quot;,&quot;printemps&quot;,&quot;printemps&quot;,&quot;printemps&quot;,&quot;printemps&quot;,&quot;printemps&quot;,&quot;printemps&quot;,&quot;&quot;)</span>
+<span class="c1">#levels(df$Conge_scolaire_raison)</span>
 </pre></div>
 
 </div>
@@ -12357,10 +12326,154 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span><span class="kp">levels</span><span class="p">(</span>df<span class="o">$</span>temps_present<span class="p">)</span><span class="o">&lt;-</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;Clairs&#39;</span><span class="p">,</span><span class="s">&#39;Clairs&#39;</span><span class="p">,</span><span class="s">&#39;Averse&#39;</span><span class="p">,</span><span class="s">&#39;Neige&#39;</span><span class="p">,</span><span class="s">&#39;Averse&#39;</span><span class="p">,</span><span class="s">&#39;Averse&#39;</span><span class="p">,</span><span class="s">&#39;Averse&#39;</span><span class="p">,</span><span class="s">&#39;Averse&#39;</span><span class="p">,</span><span class="s">&#39;Averse&#39;</span><span class="p">,</span><span class="s">&#39;Averse&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Bruine&#39;</span><span class="p">,</span><span class="s">&#39;Brume&#39;</span><span class="p">,</span><span class="s">&#39;Brume&#39;</span><span class="p">,</span><span class="s">&#39;Neige&#39;</span><span class="p">,</span><span class="s">&#39;Neige&#39;</span><span class="p">,</span><span class="s">&#39;Neige&#39;</span><span class="p">,</span><span class="s">&#39;Nuages&#39;</span><span class="p">,</span><span class="s">&#39;Brouillard&#39;</span><span class="p">,</span><span class="s">&#39;Neige&#39;</span><span class="p">,</span><span class="s">&#39;Neige&#39;</span><span class="p">,</span><span class="s">&#39;Nuages&#39;</span><span class="p">,</span><span class="s">&#39;Nuages&#39;</span><span class="p">,</span><span class="s">&#39;Orage&#39;</span><span class="p">,</span><span class="s">&#39;Orage&#39;</span><span class="p">,</span><span class="s">&#39;Orage&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">,</span><span class="s">&#39;Pluie&#39;</span><span class="p">)</span>
+<div class=" highlight hl-r"><pre><span></span><span class="kp">levels</span><span class="p">(</span>df<span class="o">$</span>temps_present<span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<ol class=list-inline>
+	<li>'&lt;c9&gt;clairs visibles, tonnerre non perceptible'</li>
+	<li>'&lt;c9&gt;tat du ciel inchang&lt;e9&gt; dans l&lt;U+0092&gt;ensemble'</li>
+	<li>'Averse(s) de gr&lt;ea&gt;le*, ou de pluie et de gr&lt;ea&gt;le*'</li>
+	<li>'Averse(s) de neige, faible(s)'</li>
+	<li>'Averse(s) de neige, ou de pluie et de neige'</li>
+	<li>'Averse(s) de pluie'</li>
+	<li>'Averse(s) de pluie et neige m&lt;ea&gt;l&lt;e9&gt;es, faible(s)'</li>
+	<li>'Averse(s) de pluie, faible(s)'</li>
+	<li>'Averse(s) de pluie, mod&lt;e9&gt;r&lt;e9&gt;e(s) ou forte(s)'</li>
+	<li>'Averse(s) de pluie, violente(s)'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt;'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt; &lt;e0&gt; distance au moment de'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt; en bancs'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt;, ciel invisible, a d&lt;e9&gt;but&lt;e9&gt; ou est devenu plus &lt;e9&gt;pais au cours del\'heure pr&lt;e9&gt;c&lt;e9&gt;dente'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt;, ciel invisible, s&lt;U+0092&gt;est aminci au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt;, ciel invisible, sans changement appr&lt;e9&gt;ciable au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt;, ciel visible, a d&lt;e9&gt;but&lt;e9&gt; ou est devenu plus &lt;e9&gt;pais au cours del\'heure pr&lt;e9&gt;c&lt;e9&gt;dente'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt;, ciel visible, s&lt;U+0092&gt;est aminci au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente'</li>
+	<li>'Brouillard ou brouillard glac&lt;e9&gt;, ciel visible, sans changement appr&lt;e9&gt;ciable au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente'</li>
+	<li>'Brouillard, d&lt;e9&gt;posant du givre, ciel invisible'</li>
+	<li>'Brouillard, d&lt;e9&gt;posant du givre, ciel visible'</li>
+	<li>'Bruine (ne se congelant pas) ou neige en grains'</li>
+	<li>'Bruine et pluie, faibles'</li>
+	<li>'Bruine et pluie, mod&lt;e9&gt;r&lt;e9&gt;es ou fortes'</li>
+	<li>'Bruine ou pluie se congelant'</li>
+	<li>'Bruine, sans cong&lt;e9&gt;lation, continue, faible au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Bruine, sans cong&lt;e9&gt;lation, continue, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Bruine, sans cong&lt;e9&gt;lation, intermittente, faible au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Bruine, sans cong&lt;e9&gt;lation, intermittente, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Brume'</li>
+	<li>'Brume s&lt;e8&gt;che'</li>
+	<li>'Chute continue de flocons de neige, faible au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Chute continue de flocons de neige, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Chute intermittente de flocons de neige, faible au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Dans l&lt;U+0092&gt;ensemble, nuages se dissipant ou devenant moins &lt;e9&gt;pais'</li>
+	<li>'Mince couche de brouillard ou de brouillard glac&lt;e9&gt; &lt;e0&gt; la station, qu&lt;U+0092&gt;il s&lt;U+0092&gt;agisse d&lt;U+0092&gt;une station terrestre ou d&lt;U+0092&gt;une station en mer, d&lt;U+0092&gt;une &lt;e9&gt;paisseur n&lt;U+0092&gt;exc&lt;e9&gt;dant pas 2 m&lt;e8&gt;tres sur terre ou 10 m&lt;e8&gt;tres en mer'</li>
+	<li>'Neige'</li>
+	<li>'Neige en grains (avec ou sans brouillard)'</li>
+	<li>'Nuages en formation ou en train de se d&lt;e9&gt;velopper'</li>
+	<li>'On n&lt;U+0092&gt;a pas observ&lt;e9&gt; d&lt;U+0092&gt;&lt;e9&gt;volution des nuages ou on n&lt;U+0092&gt;a pas pu suivre cette &lt;e9&gt;volution'</li>
+	<li>'Orage (avec ou sans pr&lt;e9&gt;cipitations)'</li>
+	<li>'Orage faible ou mod&lt;e9&gt;r&lt;e9&gt;, sans gr&lt;ea&gt;le*, mais avec pluie ou neige ou pluie et neige m&lt;ea&gt;l&lt;e9&gt;es au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Orage, mais pas de pr&lt;e9&gt;cipitations au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie (ne se congelant pas)'</li>
+	<li>'Pluie (ou bruine) et neige, faibles'</li>
+	<li>'Pluie (ou bruine) et neige, mod&lt;e9&gt;r&lt;e9&gt;es ou fortes'</li>
+	<li>'Pluie et neige m&lt;ea&gt;l&lt;e9&gt;es ou granules de glace'</li>
+	<li>'Pluie faible au moment de l&lt;U+0092&gt;observation, Orage durant l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente mais non au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie mod&lt;e9&gt;r&lt;e9&gt;e ou forte au moment de l&lt;U+0092&gt;observation, Orage durant l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente mais non au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie, sans cong&lt;e9&gt;lation, continue, faible au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie, sans cong&lt;e9&gt;lation, continue, forte au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie, sans cong&lt;e9&gt;lation, continue, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie, sans cong&lt;e9&gt;lation, intermittente, faible au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie, sans cong&lt;e9&gt;lation, intermittente, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation'</li>
+	<li>'Pluie, se congelant, faible'</li>
+	<li>'Pr&lt;e9&gt;cipitations en vue, atteignant le sol ou la surface de la mer, mais distantes (c&lt;U+0092&gt;est-&lt;e0&gt;-dire &lt;e0&gt; plus de 5 km &lt;e0&gt; l&lt;U+0092&gt;estime) de la station'</li>
+	<li>'Pr&lt;e9&gt;cipitations en vue, atteignant le sol ou la surface de la mer, pr&lt;e8&gt;s de la station mais pas &lt;e0&gt; la station m&lt;ea&gt;me'</li>
+</ol>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">levels</span><span class="p">(</span>df<span class="o">$</span>temps_present <span class="o">&lt;-</span> fct_collapse<span class="p">(</span>df<span class="o">$</span>temps_present<span class="p">,</span>
+  Clairs <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;&lt;c9&gt;clairs visibles, tonnerre non perceptible&#39;</span><span class="p">,</span><span class="s">&#39;&lt;c9&gt;tat du ciel inchang&lt;e9&gt; dans l&lt;U+0092&gt;ensemble&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;c9&gt;tat du ciel inchang&lt;e9&gt; dans l&lt;U+0092&gt;ensemble&#39;</span><span class="p">),</span>
+  Averse <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Averse(s) de gr&lt;ea&gt;le*, ou de pluie et de gr&lt;ea&gt;le*&#39;</span><span class="p">,</span> <span class="s">&#39;Averse(s) de neige, faible(s)&#39;</span><span class="p">,</span><span class="s">&#39;Averse(s) de neige, ou de pluie et de neige&#39;</span><span class="p">,</span> <span class="s">&#39;Averse(s) de pluie&#39;</span><span class="p">,</span> <span class="s">&#39;Averse(s) de pluie et neige m&lt;ea&gt;l&lt;e9&gt;es, faible(s)&#39;</span><span class="p">,</span> <span class="s">&#39;Averse(s) de pluie, faible(s)&#39;</span><span class="p">,</span> <span class="s">&#39;Averse(s) de pluie, mod&lt;e9&gt;r&lt;e9&gt;e(s) ou forte(s)&#39;</span><span class="p">,</span> <span class="s">&#39;Averse(s) de pluie, violente(s)&#39;</span><span class="p">),</span>
+  Neige <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Chute continue de flocons de neige, faible au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span><span class="s">&#39;Chute continue de flocons de neige, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Chute intermittente de flocons de neige, faible au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span><span class="s">&#39;Neige&#39;</span><span class="p">,</span> <span class="s">&#39;Neige en grains (avec ou sans brouillard)&#39;</span><span class="p">),</span>
+  Brouillard <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt; &lt;e0&gt; distance au moment de&#39;</span> <span class="p">,</span><span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt; en bancs&#39;</span><span class="p">,</span> <span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt;, ciel invisible, a d&lt;e9&gt;but&lt;e9&gt; ou est devenu plus &lt;e9&gt;pais au cours del\&#39;heure pr&lt;e9&gt;c&lt;e9&gt;dente&#39;</span><span class="p">,</span> <span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt;, ciel invisible, s&lt;U+0092&gt;est aminci au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente&#39;</span><span class="p">,</span> <span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt;, ciel invisible, sans changement appr&lt;e9&gt;ciable au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente&#39;</span> <span class="p">,</span><span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt;, ciel visible, a d&lt;e9&gt;but&lt;e9&gt; ou est devenu plus &lt;e9&gt;pais au cours del\&#39;heure pr&lt;e9&gt;c&lt;e9&gt;dente&#39;</span><span class="p">,</span> <span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt;, ciel visible, s&lt;U+0092&gt;est aminci au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente&#39;</span><span class="p">,</span> <span class="s">&#39;Brouillard ou brouillard glac&lt;e9&gt;, ciel visible, sans changement appr&lt;e9&gt;ciable au cours de l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente&#39;</span><span class="p">,</span> <span class="s">&#39;Brouillard, d&lt;e9&gt;posant du givre, ciel invisible&#39;</span> <span class="p">,</span><span class="s">&#39;Brouillard, d&lt;e9&gt;posant du givre, ciel visible&#39;</span><span class="p">,</span><span class="s">&#39;Mince couche de brouillard ou de brouillard glac&lt;e9&gt; &lt;e0&gt; la station, qu&lt;U+0092&gt;il s&lt;U+0092&gt;agisse d&lt;U+0092&gt;une station terrestre ou d&lt;U+0092&gt;une station en mer, d&lt;U+0092&gt;une &lt;e9&gt;paisseur n&lt;U+0092&gt;exc&lt;e9&gt;dant pas 2 m&lt;e8&gt;tres sur terre ou 10 m&lt;e8&gt;tres en mer&#39;</span><span class="p">),</span>
+  Bruine <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Bruine (ne se congelant pas) ou neige en grains&#39;</span><span class="p">,</span> <span class="s">&#39;Bruine et pluie, faibles&#39;</span><span class="p">,</span> <span class="s">&#39;Bruine et pluie, mod&lt;e9&gt;r&lt;e9&gt;es ou fortes&#39;</span><span class="p">,</span> <span class="s">&#39;Bruine ou pluie se congelant&#39;</span><span class="p">,</span> <span class="s">&#39;Bruine, sans cong&lt;e9&gt;lation, continue, faible au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Bruine, sans cong&lt;e9&gt;lation, continue, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span><span class="s">&#39;Bruine, sans cong&lt;e9&gt;lation, intermittente, faible au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span><span class="s">&#39;Bruine, sans cong&lt;e9&gt;lation, intermittente, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">),</span>
+  Brume <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Brume&#39;</span><span class="p">,</span> <span class="s">&#39;Brume s&lt;e8&gt;che&#39;</span><span class="p">),</span>
+  Nuages <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Dans l&lt;U+0092&gt;ensemble, nuages se dissipant ou devenant moins &lt;e9&gt;pais&#39;</span><span class="p">,</span><span class="s">&#39;Nuages en formation ou en train de se d&lt;e9&gt;velopper&#39;</span><span class="p">,</span> <span class="s">&#39;On n&lt;U+0092&gt;a pas observ&lt;e9&gt; d&lt;U+0092&gt;&lt;e9&gt;volution des nuages ou on n&lt;U+0092&gt;a pas pu suivre cette &lt;e9&gt;volution&#39;</span><span class="p">),</span>
+  Orage <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Orage (avec ou sans pr&lt;e9&gt;cipitations)&#39;</span> <span class="p">,</span><span class="s">&#39;Orage faible ou mod&lt;e9&gt;r&lt;e9&gt;, sans gr&lt;ea&gt;le*, mais avec pluie ou neige ou pluie et neige m&lt;ea&gt;l&lt;e9&gt;es au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Orage, mais pas de pr&lt;e9&gt;cipitations au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span><span class="s">&#39;Pluie faible au moment de l&lt;U+0092&gt;observation, Orage durant l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente mais non au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Pluie mod&lt;e9&gt;r&lt;e9&gt;e ou forte au moment de l&lt;U+0092&gt;observation, Orage durant l&lt;U+0092&gt;heure pr&lt;e9&gt;c&lt;e9&gt;dente mais non au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">),</span>
+  Pluie <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Pluie (ne se congelant pas)&#39;</span><span class="p">,</span><span class="s">&#39;Pluie (ou bruine) et neige, faibles&#39;</span><span class="p">,</span> <span class="s">&#39;Pluie (ou bruine) et neige, mod&lt;e9&gt;r&lt;e9&gt;es ou fortes&#39;</span><span class="p">,</span><span class="s">&#39;Pluie et neige m&lt;ea&gt;l&lt;e9&gt;es ou granules de glace&#39;</span><span class="p">,</span><span class="s">&#39;Pluie, sans cong&lt;e9&gt;lation, continue, faible au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Pluie, sans cong&lt;e9&gt;lation, continue, forte au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span><span class="s">&#39;Pluie, sans cong&lt;e9&gt;lation, continue, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Pluie, sans cong&lt;e9&gt;lation, intermittente, faible au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Pluie, sans cong&lt;e9&gt;lation, intermittente, mod&lt;e9&gt;r&lt;e9&gt;e au moment de l&lt;U+0092&gt;observation&#39;</span><span class="p">,</span> <span class="s">&#39;Pluie, se congelant, faible&#39;</span> <span class="p">,</span><span class="s">&#39;Pr&lt;e9&gt;cipitations en vue, atteignant le sol ou la surface de la mer, mais distantes (c&lt;U+0092&gt;est-&lt;e0&gt;-dire &lt;e0&gt; plus de 5 km &lt;e0&gt; l&lt;U+0092&gt;estime) de la station&#39;</span><span class="p">,</span> <span class="s">&#39;Pr&lt;e9&gt;cipitations en vue, atteignant le sol ou la surface de la mer, pr&lt;e8&gt;s de la station mais pas &lt;e0&gt; la station m&lt;ea&gt;me&#39;</span><span class="p">)</span>  
+<span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<ol class=list-inline>
+	<li>'Clairs'</li>
+	<li>'Averse'</li>
+	<li>'Brouillard'</li>
+	<li>'Bruine'</li>
+	<li>'Brume'</li>
+	<li>'Neige'</li>
+	<li>'Nuages'</li>
+	<li>'Orage'</li>
+	<li>'Pluie'</li>
+</ol>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="c1">#levels(df$temps_present)&lt;-c(&#39;Clairs&#39;,&#39;Clairs&#39;,&#39;Averse&#39;,&#39;Neige&#39;,&#39;Averse&#39;,&#39;Averse&#39;,&#39;Averse&#39;,&#39;Averse&#39;,&#39;Averse&#39;,&#39;Averse&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Brouillard&#39;,&#39;Bruine&#39;,&#39;Bruine&#39;,&#39;Bruine&#39;,&#39;Bruine&#39;,&#39;Bruine&#39;,&#39;Bruine&#39;,&#39;Bruine&#39;,&#39;Bruine&#39;,&#39;Brume&#39;,&#39;Brume&#39;,&#39;Neige&#39;,&#39;Neige&#39;,&#39;Neige&#39;,&#39;Nuages&#39;,&#39;Brouillard&#39;,&#39;Neige&#39;,&#39;Neige&#39;,&#39;Nuages&#39;,&#39;Nuages&#39;,&#39;Orage&#39;,&#39;Orage&#39;,&#39;Orage&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;,&#39;Pluie&#39;)</span>
 </pre></div>
 
 </div>
@@ -12378,7 +12491,7 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">names</span><span class="p">(</span>df<span class="p">)[</span><span class="m">11</span><span class="p">]</span><span class="o">&lt;-</span><span class="s">&quot;Ferie&quot;</span>
@@ -12394,47 +12507,53 @@ df<span class="o">&lt;-</span>read.csv<span class="p">(</span>fichier_donnees<sp
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="4.-Etant-nos-stations-&#224;-Paris,-nous-prennons-que-la-zone-C-comme-r&#233;f&#233;rence">4. Etant nos stations &#224; Paris, nous prennons que la zone C comme r&#233;f&#233;rence<a class="anchor-link" href="#4.-Etant-nos-stations-&#224;-Paris,-nous-prennons-que-la-zone-C-comme-r&#233;f&#233;rence">&#182;</a></h5>
+<h5 id="4.-Etant-nos-stations-&#224;-Paris,-nous-prennons-que-la-zone-C-comme-r&#233;f&#233;rence.-Mais-nous-gardons-les-autres-dans-une-autre-variable.">4. Etant nos stations &#224; Paris, nous prennons que la zone C comme r&#233;f&#233;rence. Mais nous gardons les autres dans une autre variable.<a class="anchor-link" href="#4.-Etant-nos-stations-&#224;-Paris,-nous-prennons-que-la-zone-C-comme-r&#233;f&#233;rence.-Mais-nous-gardons-les-autres-dans-une-autre-variable.">&#182;</a></h5>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span><span class="c1">#Supprimer congés qui n&#39;appartient pas à la zone parisiènne</span>
-df<span class="p">[</span>df<span class="p">[</span><span class="s">&quot;Conges_Escolaire_Zone_C&quot;</span><span class="p">]</span><span class="o">==</span><span class="m">0</span><span class="p">,][</span><span class="s">&quot;Conge_scolaire_raison&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="s">&quot;[]&quot;</span>
-
-<span class="c1">#Les conges escolaires doivent corresponder aux congés de la zone C</span>
-df<span class="p">[</span><span class="s">&quot;Conges_Escolaire&quot;</span><span class="p">]</span><span class="o">&lt;-</span>df<span class="p">[</span><span class="s">&quot;Conges_Escolaire_Zone_C&quot;</span><span class="p">]</span><span class="o">==</span><span class="m">1</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1">#On aura Paris et ailleurs comme congés escolaire</span>
+df<span class="p">[,</span><span class="s">&quot;Conges_Escolaire_Zone_AB&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="m">0</span>
+df<span class="p">[</span>df<span class="p">[</span><span class="s">&quot;Conges_Escolaire_Zone_A&quot;</span><span class="p">]</span><span class="o">==</span><span class="m">1</span> <span class="o">|</span> df<span class="p">[</span><span class="s">&quot;Conges_Escolaire_Zone_B&quot;</span><span class="p">]</span><span class="o">==</span><span class="m">1</span><span class="p">,</span><span class="s">&quot;Conges_Escolaire_Zone_AB&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="m">1</span>
 
 <span class="c1">#Nous supprimons les colonnes dont nous n&#39;avons plus besoin</span>
 df<span class="o">$</span>Conge_zones<span class="o">&lt;-</span><span class="kc">NULL</span>
+df<span class="o">$</span>Conges_Escolaire<span class="o">&lt;-</span><span class="kc">NULL</span>
 df<span class="o">$</span>Conges_Escolaire_Zone_A<span class="o">&lt;-</span><span class="kc">NULL</span>
 df<span class="o">$</span>Conges_Escolaire_Zone_B<span class="o">&lt;-</span><span class="kc">NULL</span>
-df<span class="o">$</span>Conges_Escolaire_Zone_C<span class="o">&lt;-</span><span class="kc">NULL</span>
+<span class="c1">#df$Conges_Escolaire_Zone_C&lt;-NULL</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>Warning message in `[&lt;-.factor`(`*tmp*`, iseq, value = c(&#34;[]&#34;, &#34;[]&#34;, &#34;[]&#34;, &#34;[]&#34;, :
-&#34;invalid factor level, NA generated&#34;</pre>
 </div>
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="c1">#Jour d&#39;activité ?</span>
+<span class="c1">#df[&quot;jour_activite&quot;]&lt;-(df[&quot;Ferie&quot;]==0 &amp; df[&quot;Jour_de_la_Semaine&quot;]&lt;=5)</span>
+df<span class="p">[,</span><span class="s">&quot;jour_activite&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="m">0</span>
+df<span class="p">[</span>df<span class="p">[</span><span class="s">&quot;Ferie&quot;</span><span class="p">]</span><span class="o">==</span><span class="m">0</span> <span class="o">&amp;</span> df<span class="p">[</span><span class="s">&quot;Jour_de_la_Semaine&quot;</span><span class="p">]</span><span class="o">&lt;=</span><span class="m">5</span><span class="p">,</span><span class="s">&quot;jour_activite&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="m">1</span>
+<span class="c1">#On supprime ces variables </span>
+df<span class="p">[</span><span class="s">&quot;Ferie&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="kc">NULL</span>
+df<span class="p">[</span><span class="s">&quot;Conge_hebdomadaire&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="kc">NULL</span>
+<span class="c1">#df[&quot;Jour_de_la_Semaine&quot;]&lt;-NULL</span>
 
+<span class="c1">#&quot;Feriée raison&quot;, il est déjà pris en compte par feriée + moi. Pareil pour &quot;Congés raison&quot;. </span>
+df<span class="o">$</span>Ferie_raison<span class="o">&lt;-</span><span class="kc">NULL</span>
+df<span class="o">$</span>Conge_scolaire_raison<span class="o">&lt;-</span><span class="kc">NULL</span>
+df<span class="o">$</span>Conge_scolaire<span class="o">&lt;-</span><span class="kc">NULL</span>
+</pre></div>
+
+</div>
 </div>
 </div>
 
@@ -12449,7 +12568,7 @@ df<span class="o">$</span>Conges_Escolaire_Zone_C<span class="o">&lt;-</span><sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>df<span class="o">$</span>ext_so2<span class="o">&lt;-</span><span class="kc">NULL</span>
@@ -12465,13 +12584,34 @@ df<span class="o">$</span>ext_co<span class="o">&lt;-</span><span class="kc">NUL
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Mes-tests">Mes tests<a class="anchor-link" href="#Mes-tests">&#182;</a></h4>
+<h5 id="6.-Reset-index">6. Reset index<a class="anchor-link" href="#6.-Reset-index">&#182;</a></h5>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>df<span class="o">$</span>X<span class="o">&lt;-</span><span class="kc">NULL</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Resultats">Resultats<a class="anchor-link" href="#Resultats">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>df<span class="p">)</span>
@@ -12493,14 +12633,14 @@ df<span class="o">$</span>ext_co<span class="o">&lt;-</span><span class="kc">NUL
 
 
 <div class="output_text output_subarea ">
-<pre>       X             Index                 Date_Heure_Locale  Heure_Local   
- Min.   :    1   Min.   :    1   2013-10-27 02:00:00:    2   Min.   : 0.00  
- 1st Qu.:17539   1st Qu.:17539   2014-10-26 02:00:00:    2   1st Qu.: 5.75  
- Median :35077   Median :35077   2015-10-25 02:00:00:    2   Median :11.50  
- Mean   :35077   Mean   :35077   2016-10-30 02:00:00:    2   Mean   :11.50  
- 3rd Qu.:52614   3rd Qu.:52614   2017-10-29 02:00:00:    2   3rd Qu.:17.25  
- Max.   :70152   Max.   :70152   2018-10-28 02:00:00:    2   Max.   :23.00  
-                                 (Other)            :70140                  
+<pre>     Index                 Date_Heure_Locale  Heure_Local   
+ Min.   :    1   2013-10-27 02:00:00:    2   Min.   : 0.00  
+ 1st Qu.:17539   2014-10-26 02:00:00:    2   1st Qu.: 5.75  
+ Median :35077   2015-10-25 02:00:00:    2   Median :11.50  
+ Mean   :35077   2016-10-30 02:00:00:    2   Mean   :11.50  
+ 3rd Qu.:52614   2017-10-29 02:00:00:    2   3rd Qu.:17.25  
+ Max.   :70152   2018-10-28 02:00:00:    2   Max.   :23.00  
+                 (Other)            :70140                  
                Timestamp         Annee           Mois            Heure      
  2013-01-01 00:00:00:    1   Min.   :2013   Min.   : 1.000   Min.   : 0.00  
  2013-01-01 01:00:00:    1   1st Qu.:2015   1st Qu.: 4.000   1st Qu.: 5.75  
@@ -12509,74 +12649,558 @@ df<span class="o">$</span>ext_co<span class="o">&lt;-</span><span class="kc">NUL
  2013-01-01 04:00:00:    1   3rd Qu.:2019   3rd Qu.:10.000   3rd Qu.:17.25  
  2013-01-01 05:00:00:    1   Max.   :2021   Max.   :12.000   Max.   :23.00  
  (Other)            :70146                                                  
- Semaine_de_lannee Jour_de_la_Semaine   Ferie        
- Min.   : 1.00     Min.   :1.000      Mode :logical  
- 1st Qu.:14.00     1st Qu.:2.000      FALSE:68281    
- Median :27.00     Median :4.000      TRUE :1871     
- Mean   :26.62     Mean   :3.999                     
- 3rd Qu.:40.00     3rd Qu.:6.000                     
- Max.   :53.00     Max.   :7.000                     
-                                                     
-                  Ferie_raison   Conge_scolaire  Conge_scolaire_raison
- []                     :68281   Mode :logical   ete      :    0      
- [&#34;Jour de l&#39;an&#34;]       :  191   FALSE:45978     hiver    : 3072      
- [&#34;Armistice 1918&#34;]     :  168   TRUE :24174     Toussaint: 2647      
- [&#34;Ascension&#34;]          :  168                   Noel     : 2855      
- [&#34;Assomption&#34;]         :  168                   printemps: 3096      
- [&#34;Fête de la Victoire&#34;]:  168                            :    0      
- (Other)                : 1008                   NA&#39;s     :58482      
- Conge_hebdomadaire pluie_3_heures      temps_present   temperature_celsius
- Mode :logical      Min.   :-0.100   Nuages    :31082   Min.   :-8.40      
- FALSE:50135        1st Qu.: 0.000   Clairs    :22215   1st Qu.: 6.90      
- TRUE :20017        Median : 0.000   Pluie     : 5513   Median :11.80      
-                    Mean   : 0.212   Brume     : 1842   Mean   :12.22      
-                    3rd Qu.: 0.000   Brouillard: 1650   3rd Qu.:17.27      
-                    Max.   :56.200   (Other)   : 3408   Max.   :41.40      
-                    NA&#39;s   :4442     NA&#39;s      : 4442   NA&#39;s   :4442       
-    pression      direction_vent_10mn temps_present_num
- Min.   : 96010   Min.   :  0.0       Min.   : 0.000   
- 1st Qu.:100110   1st Qu.: 90.0       1st Qu.: 1.508   
- Median :100677   Median :203.3       Median : 2.000   
- Mean   :100617   Mean   :182.8       Mean   : 9.180   
- 3rd Qu.:101187   3rd Qu.:253.3       3rd Qu.: 4.000   
- Max.   :103560   Max.   :360.0       Max.   :95.000   
- NA&#39;s   :4442     NA&#39;s   :4442        NA&#39;s   :4442     
- type_tendance_barometrique vitesse_vent_10mn nebulosite_totale
- Min.   :0.000              Min.   : 0.000    Min.   :  0.00   
- 1st Qu.:2.333              1st Qu.: 2.100    1st Qu.: 40.00   
- Median :4.000              Median : 3.249    Median : 80.56   
- Mean   :4.297              Mean   : 3.481    Mean   : 66.60   
- 3rd Qu.:6.333              3rd Qu.: 4.600    3rd Qu.: 93.33   
- Max.   :8.000              Max.   :14.400    Max.   :101.00   
- NA&#39;s   :4442               NA&#39;s   :4442      NA&#39;s   :4442     
-      co2          temperature          no              no2        
- Min.   : 381.0   Min.   : 3.80   Min.   :  1.00   Min.   :  4.00  
- 1st Qu.: 442.0   1st Qu.:15.60   1st Qu.: 10.00   1st Qu.: 39.00  
- Median : 475.0   Median :18.90   Median : 23.00   Median : 54.00  
- Mean   : 484.8   Mean   :19.26   Mean   : 37.33   Mean   : 54.91  
- 3rd Qu.: 515.0   3rd Qu.:23.00   3rd Qu.: 49.00   3rd Qu.: 69.00  
- Max.   :1056.0   Max.   :35.20   Max.   :929.00   Max.   :265.00  
- NA&#39;s   :6565     NA&#39;s   :2008    NA&#39;s   :8517     NA&#39;s   :6997    
-    humidite     particules_fines    ext_pm25         ext_pm10    
- Min.   :13.10   Min.   :  5.00   Min.   : 18.00   Min.   :  6.0  
- 1st Qu.:40.70   1st Qu.: 23.00   1st Qu.: 50.00   1st Qu.: 28.0  
- Median :47.60   Median : 35.00   Median : 61.00   Median : 36.0  
- Mean   :47.85   Mean   : 45.72   Mean   : 65.55   Mean   : 38.3  
- 3rd Qu.:54.90   3rd Qu.: 53.00   3rd Qu.: 76.00   3rd Qu.: 47.0  
- Max.   :95.40   Max.   :979.00   Max.   :177.00   Max.   :122.0  
- NA&#39;s   :2015    NA&#39;s   :3996     NA&#39;s   :12072    NA&#39;s   :12048  
-     ext_o3         ext_no2      Conges_Escolaire.Conges_Escolaire_Zone_C
- Min.   : 1.00   Min.   : 4.00   Mode :logical                           
- 1st Qu.:17.00   1st Qu.:32.00   FALSE:58482                             
- Median :24.00   Median :40.00   TRUE :11670                             
- Mean   :24.57   Mean   :40.46                                           
- 3rd Qu.:31.00   3rd Qu.:48.00                                           
- Max.   :85.00   Max.   :89.00                                           
- NA&#39;s   :12192   NA&#39;s   :12048                                           </pre>
+ Semaine_de_lannee Jour_de_la_Semaine Conges_Escolaire_Zone_C pluie_3_heures  
+ Min.   : 1.00     Min.   :1.000      Min.   :0.0000          Min.   :-0.100  
+ 1st Qu.:14.00     1st Qu.:2.000      1st Qu.:0.0000          1st Qu.: 0.000  
+ Median :27.00     Median :4.000      Median :0.0000          Median : 0.000  
+ Mean   :26.62     Mean   :3.999      Mean   :0.1664          Mean   : 0.212  
+ 3rd Qu.:40.00     3rd Qu.:6.000      3rd Qu.:0.0000          3rd Qu.: 0.000  
+ Max.   :53.00     Max.   :7.000      Max.   :1.0000          Max.   :56.200  
+                                                              NA&#39;s   :4442    
+    temps_present   temperature_celsius    pression      direction_vent_10mn
+ Nuages    :31082   Min.   :-8.40       Min.   : 96010   Min.   :  0.0      
+ Clairs    :22215   1st Qu.: 6.90       1st Qu.:100110   1st Qu.: 90.0      
+ Pluie     : 5513   Median :11.80       Median :100677   Median :203.3      
+ Brume     : 1842   Mean   :12.22       Mean   :100617   Mean   :182.8      
+ Brouillard: 1650   3rd Qu.:17.27       3rd Qu.:101187   3rd Qu.:253.3      
+ (Other)   : 3408   Max.   :41.40       Max.   :103560   Max.   :360.0      
+ NA&#39;s      : 4442   NA&#39;s   :4442        NA&#39;s   :4442     NA&#39;s   :4442       
+ temps_present_num type_tendance_barometrique vitesse_vent_10mn
+ Min.   : 0.000    Min.   :0.000              Min.   : 0.000   
+ 1st Qu.: 1.508    1st Qu.:2.333              1st Qu.: 2.100   
+ Median : 2.000    Median :4.000              Median : 3.249   
+ Mean   : 9.180    Mean   :4.297              Mean   : 3.481   
+ 3rd Qu.: 4.000    3rd Qu.:6.333              3rd Qu.: 4.600   
+ Max.   :95.000    Max.   :8.000              Max.   :14.400   
+ NA&#39;s   :4442      NA&#39;s   :4442               NA&#39;s   :4442     
+ nebulosite_totale      co2          temperature          no        
+ Min.   :  0.00    Min.   : 381.0   Min.   : 3.80   Min.   :  1.00  
+ 1st Qu.: 40.00    1st Qu.: 442.0   1st Qu.:15.60   1st Qu.: 10.00  
+ Median : 80.56    Median : 475.0   Median :18.90   Median : 23.00  
+ Mean   : 66.60    Mean   : 484.8   Mean   :19.26   Mean   : 37.33  
+ 3rd Qu.: 93.33    3rd Qu.: 515.0   3rd Qu.:23.00   3rd Qu.: 49.00  
+ Max.   :101.00    Max.   :1056.0   Max.   :35.20   Max.   :929.00  
+ NA&#39;s   :4442      NA&#39;s   :6565     NA&#39;s   :2008    NA&#39;s   :8517    
+      no2            humidite     particules_fines    ext_pm25     
+ Min.   :  4.00   Min.   :13.10   Min.   :  5.00   Min.   : 18.00  
+ 1st Qu.: 39.00   1st Qu.:40.70   1st Qu.: 23.00   1st Qu.: 50.00  
+ Median : 54.00   Median :47.60   Median : 35.00   Median : 61.00  
+ Mean   : 54.91   Mean   :47.85   Mean   : 45.72   Mean   : 65.55  
+ 3rd Qu.: 69.00   3rd Qu.:54.90   3rd Qu.: 53.00   3rd Qu.: 76.00  
+ Max.   :265.00   Max.   :95.40   Max.   :979.00   Max.   :177.00  
+ NA&#39;s   :6997     NA&#39;s   :2015    NA&#39;s   :3996     NA&#39;s   :12072   
+    ext_pm10         ext_o3         ext_no2      Conges_Escolaire_Zone_AB
+ Min.   :  6.0   Min.   : 1.00   Min.   : 4.00   Min.   :0.0000          
+ 1st Qu.: 28.0   1st Qu.:17.00   1st Qu.:32.00   1st Qu.:0.0000          
+ Median : 36.0   Median :24.00   Median :40.00   Median :0.0000          
+ Mean   : 38.3   Mean   :24.57   Mean   :40.46   Mean   :0.2142          
+ 3rd Qu.: 47.0   3rd Qu.:31.00   3rd Qu.:48.00   3rd Qu.:0.0000          
+ Max.   :122.0   Max.   :85.00   Max.   :89.00   Max.   :1.0000          
+ NA&#39;s   :12048   NA&#39;s   :12192   NA&#39;s   :12048                           
+ jour_activite   
+ Min.   :0.0000  
+ 1st Qu.:0.0000  
+ Median :1.0000  
+ Mean   :0.6926  
+ 3rd Qu.:1.0000  
+ Max.   :1.0000  
+                 </pre>
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Test-de-modele">Test de modele<a class="anchor-link" href="#Test-de-modele">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>df_mod_tr<span class="o">&lt;-</span>df<span class="p">[</span>df<span class="p">[</span><span class="s">&quot;Annee&quot;</span><span class="p">]</span><span class="o">&gt;=</span><span class="m">2014</span> <span class="o">&amp;</span> df<span class="o">$</span>Annee<span class="o">&lt;</span><span class="m">2019</span><span class="p">,</span><span class="o">!</span><span class="kp">colnames</span><span class="p">(</span>df<span class="p">)</span> <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;Date_Heure_Locale&quot;</span><span class="p">,</span><span class="s">&quot;Timestamp&quot;</span><span class="p">,</span><span class="s">&quot;temps_present&quot;</span><span class="p">,</span><span class="s">&quot;Heure&quot;</span><span class="p">)]</span>
+df_mod_test<span class="o">&lt;-</span>df<span class="p">[</span>df<span class="o">$</span>Annee<span class="o">==</span><span class="m">2019</span><span class="p">,</span><span class="o">!</span><span class="kp">colnames</span><span class="p">(</span>df<span class="p">)</span> <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;Date_Heure_Locale&quot;</span><span class="p">,</span><span class="s">&quot;Timestamp&quot;</span><span class="p">,</span><span class="s">&quot;temps_present&quot;</span><span class="p">,</span><span class="s">&quot;Heure&quot;</span><span class="p">)]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>mod<span class="o">&lt;-</span>lm<span class="p">(</span>co2<span class="o">~</span><span class="m">.</span><span class="p">,</span>df_mod_tr<span class="p">)</span>
+<span class="c1">#?lm</span>
+pr<span class="o">&lt;-</span>predict<span class="p">(</span>mod<span class="p">,</span>df_mod_test<span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">length</span><span class="p">(</span>df_mod_test<span class="o">$</span>Annee<span class="p">)</span>
+<span class="kp">length</span><span class="p">(</span>pr<span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+8760
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+8760
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>pr_df<span class="o">&lt;-</span><span class="kt">data.frame</span><span class="p">(</span>Date<span class="o">=</span>df<span class="p">[</span>df<span class="o">$</span>Annee<span class="o">==</span><span class="m">2019</span><span class="p">,</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;Date_Heure_Locale&quot;</span><span class="p">)],</span>prev<span class="o">=</span>pr<span class="p">,</span>co2<span class="o">=</span>df<span class="p">[</span>df<span class="o">$</span>Annee<span class="o">==</span><span class="m">2019</span><span class="p">,</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;co2&quot;</span><span class="p">)])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>pr_df
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<table>
+<thead><tr><th></th><th scope=col>Date</th><th scope=col>prev</th><th scope=col>co2</th></tr></thead>
+<tbody>
+	<tr><th scope=row>52444</th><td>2019-01-07 05:00:00</td><td>436.0414           </td><td>447                </td></tr>
+	<tr><th scope=row>52586</th><td>2019-01-01 01:00:00</td><td>469.0386           </td><td>460                </td></tr>
+	<tr><th scope=row>52587</th><td>2019-01-01 02:00:00</td><td>459.6739           </td><td>464                </td></tr>
+	<tr><th scope=row>52588</th><td>2019-01-01 03:00:00</td><td>500.1080           </td><td>463                </td></tr>
+	<tr><th scope=row>52589</th><td>2019-01-01 04:00:00</td><td>487.0019           </td><td>464                </td></tr>
+	<tr><th scope=row>52590</th><td>2019-01-01 05:00:00</td><td>476.8889           </td><td>467                </td></tr>
+	<tr><th scope=row>52591</th><td>2019-01-01 06:00:00</td><td>463.1284           </td><td>451                </td></tr>
+	<tr><th scope=row>52592</th><td>2019-01-01 07:00:00</td><td>460.8020           </td><td>445                </td></tr>
+	<tr><th scope=row>52593</th><td>2019-01-01 08:00:00</td><td>462.8157           </td><td>447                </td></tr>
+	<tr><th scope=row>52594</th><td>2019-01-01 09:00:00</td><td>461.8938           </td><td>430                </td></tr>
+	<tr><th scope=row>52595</th><td>2019-01-01 10:00:00</td><td>463.7522           </td><td>426                </td></tr>
+	<tr><th scope=row>52596</th><td>2019-01-01 11:00:00</td><td>461.9993           </td><td>420                </td></tr>
+	<tr><th scope=row>52597</th><td>2019-01-01 12:00:00</td><td>467.1190           </td><td>425                </td></tr>
+	<tr><th scope=row>52598</th><td>2019-01-01 13:00:00</td><td>473.0438           </td><td>436                </td></tr>
+	<tr><th scope=row>52599</th><td>2019-01-01 14:00:00</td><td>474.0031           </td><td>445                </td></tr>
+	<tr><th scope=row>52600</th><td>2019-01-01 15:00:00</td><td>479.7020           </td><td>458                </td></tr>
+	<tr><th scope=row>52601</th><td>2019-01-01 16:00:00</td><td>488.1479           </td><td>475                </td></tr>
+	<tr><th scope=row>52602</th><td>2019-01-01 17:00:00</td><td>499.3979           </td><td>493                </td></tr>
+	<tr><th scope=row>52603</th><td>2019-01-01 18:00:00</td><td>503.8058           </td><td>498                </td></tr>
+	<tr><th scope=row>52604</th><td>2019-01-01 19:00:00</td><td>506.0563           </td><td>493                </td></tr>
+	<tr><th scope=row>52605</th><td>2019-01-01 20:00:00</td><td>509.6523           </td><td>494                </td></tr>
+	<tr><th scope=row>52606</th><td>2019-01-01 21:00:00</td><td>509.4117           </td><td>484                </td></tr>
+	<tr><th scope=row>52607</th><td>2019-01-01 22:00:00</td><td>505.2034           </td><td>480                </td></tr>
+	<tr><th scope=row>52608</th><td>2019-01-01 23:00:00</td><td>508.1324           </td><td>475                </td></tr>
+	<tr><th scope=row>52609</th><td>2019-01-02 00:00:00</td><td>457.0637           </td><td>466                </td></tr>
+	<tr><th scope=row>52610</th><td>2019-01-02 01:00:00</td><td>454.5444           </td><td>453                </td></tr>
+	<tr><th scope=row>52611</th><td>2019-01-02 02:00:00</td><td>451.6511           </td><td>433                </td></tr>
+	<tr><th scope=row>52612</th><td>2019-01-02 03:00:00</td><td>448.8338           </td><td>413                </td></tr>
+	<tr><th scope=row>52613</th><td>2019-01-02 04:00:00</td><td>      NA           </td><td>408                </td></tr>
+	<tr><th scope=row>52614</th><td>2019-01-02 05:00:00</td><td>      NA           </td><td>412                </td></tr>
+	<tr><th scope=row>...</th><td>...</td><td>...</td><td>...</td></tr>
+	<tr><th scope=row>61317</th><td>2019-12-30 19:00:00</td><td>NA                 </td><td>680                </td></tr>
+	<tr><th scope=row>61318</th><td>2019-12-30 20:00:00</td><td>NA                 </td><td>690                </td></tr>
+	<tr><th scope=row>61319</th><td>2019-12-30 21:00:00</td><td>NA                 </td><td>667                </td></tr>
+	<tr><th scope=row>61320</th><td>2019-12-30 22:00:00</td><td>NA                 </td><td>594                </td></tr>
+	<tr><th scope=row>61321</th><td>2019-12-30 23:00:00</td><td>NA                 </td><td>591                </td></tr>
+	<tr><th scope=row>61322</th><td>2019-12-31 00:00:00</td><td>NA                 </td><td>565                </td></tr>
+	<tr><th scope=row>61323</th><td>2019-12-31 01:00:00</td><td>NA                 </td><td>562                </td></tr>
+	<tr><th scope=row>61324</th><td>2019-12-31 02:00:00</td><td>NA                 </td><td>553                </td></tr>
+	<tr><th scope=row>61325</th><td>2019-12-31 03:00:00</td><td>NA                 </td><td>522                </td></tr>
+	<tr><th scope=row>61326</th><td>2019-12-31 04:00:00</td><td>NA                 </td><td>502                </td></tr>
+	<tr><th scope=row>61327</th><td>2019-12-31 05:00:00</td><td>NA                 </td><td>481                </td></tr>
+	<tr><th scope=row>61328</th><td>2019-12-31 06:00:00</td><td>NA                 </td><td>467                </td></tr>
+	<tr><th scope=row>61329</th><td>2019-12-31 07:00:00</td><td>NA                 </td><td>475                </td></tr>
+	<tr><th scope=row>61330</th><td>2019-12-31 08:00:00</td><td>NA                 </td><td>477                </td></tr>
+	<tr><th scope=row>61331</th><td>2019-12-31 09:00:00</td><td>NA                 </td><td>484                </td></tr>
+	<tr><th scope=row>61332</th><td>2019-12-31 10:00:00</td><td>NA                 </td><td>513                </td></tr>
+	<tr><th scope=row>61333</th><td>2019-12-31 11:00:00</td><td>NA                 </td><td>543                </td></tr>
+	<tr><th scope=row>61334</th><td>2019-12-31 12:00:00</td><td>NA                 </td><td>513                </td></tr>
+	<tr><th scope=row>61335</th><td>2019-12-31 13:00:00</td><td>NA                 </td><td>530                </td></tr>
+	<tr><th scope=row>61336</th><td>2019-12-31 14:00:00</td><td>NA                 </td><td>562                </td></tr>
+	<tr><th scope=row>61337</th><td>2019-12-31 15:00:00</td><td>NA                 </td><td>566                </td></tr>
+	<tr><th scope=row>61338</th><td>2019-12-31 16:00:00</td><td>NA                 </td><td>579                </td></tr>
+	<tr><th scope=row>61339</th><td>2019-12-31 17:00:00</td><td>NA                 </td><td>627                </td></tr>
+	<tr><th scope=row>61340</th><td>2019-12-31 18:00:00</td><td>NA                 </td><td>682                </td></tr>
+	<tr><th scope=row>61341</th><td>2019-12-31 19:00:00</td><td>NA                 </td><td>619                </td></tr>
+	<tr><th scope=row>61342</th><td>2019-12-31 20:00:00</td><td>NA                 </td><td>490                </td></tr>
+	<tr><th scope=row>61343</th><td>2019-12-31 21:00:00</td><td>NA                 </td><td>467                </td></tr>
+	<tr><th scope=row>61344</th><td>2019-12-31 22:00:00</td><td>NA                 </td><td>468                </td></tr>
+	<tr><th scope=row>61345</th><td>2019-12-31 23:00:00</td><td>NA                 </td><td>468                </td></tr>
+	<tr><th scope=row>61346</th><td>2020-01-01 00:00:00</td><td>NA                 </td><td>505                </td></tr>
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>pr_df<span class="o">$</span>Date<span class="o">&lt;-</span><span class="kp">as.POSIXlt</span><span class="p">(</span><span class="kp">as.character</span><span class="p">(</span>pr_df<span class="p">[,</span> <span class="s">&quot;Date&quot;</span><span class="p">]),</span> tz <span class="o">=</span> <span class="s">&quot;UTC&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>plot<span class="p">(</span>pr<span class="p">,</span>type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">)</span>
+lines<span class="p">(</span>df_mod_test<span class="o">$</span>co2<span class="p">,</span>col<span class="o">=</span><span class="s">&quot;cyan&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0gAAANICAMAAADKOT/pAAAAM1BMVEUAAAAA//9NTU1oaGh8
+fHyMjIyampqnp6eysrK9vb3Hx8fQ0NDZ2dnh4eHp6enw8PD////ZpP2iAAAACXBIWXMAABJ0
+AAASdAHeZh94AAAgAElEQVR4nO3djXqjrBaGYUibpp3+cf5HO41GAQUVXSKY593XnppEWUvk
+btok34wyhJDNUUc3QMgZAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRC
+BAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQC
+JEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRC
+BAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQC
+JEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRC
+BAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQC
+JEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRCBAIkQgQCJEIEAiRC
+BAIkQgQCJEIEAiRCBAIkQgQCJEIEkgGSIqSyrFjl8nAOKEGIZIBEiECARIhAgESIQIBEiECA
+RIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESI
+QIBEiECARIhAgESIQICUmpJ7I4cFSKkpuTdyWICUmpJ7I4cFSKkpuTdyWICUmpJ7IyLRK44B
+UmpK7o2IBEg5UnJvRCRAypGSeyMiAVKOlNwbEQmQcqTk3ohIgJQjJfdGRAKkHCm5NyISIOVI
+yb0RkQApR0rujYgESDlScm9EJEDKkZJ7IyIBUo6U3BsRCZBypOTeiEiAlCMl90ZEAqQcKbk3
+IhIg5UjJvRGRAClHSu6NiARIOVJyb0QkQMqRknsjIgFSjpTcGxEJkHKk5N6ISICUIyX3RkQC
+pBwpuTciEiDlSMm9EZEAKUdK7o2IBEg5UnJvRCRAypGSeyMiAVKOlNwbEQmQcqTk3ohIgJQj
+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
+SYIyOnLfIiikI1VcR11jmes98t589/1c+c+hy+RTvY67CW9miQupjI4eBX/uE1VIR+0TTvPO
+ViEdPXIQpAI+2fDTOyrqPfL2W24hHf3c/8H6v99I/hXT0U3dP0Z3K+izFo8c9UvKS/Ot93V+
+x93y5vzbTk434c18efzsUkhH73NtZO/otbiO2hwFqf0Q70HFmzg/SLndhDdztjXRRv6OPl+n
+28jf0VwbB62so9/IIeQUARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIh
+AgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIB
+EiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBUg0J/2P34XvJIeFa1BAgFR+u
+RQ0BUvHhWtQQIBUfrkUNacgo9XNVl/fmjttF3R6QPl7U5ePv66v6+vvzS70d1+YzB0g15AHp
+ov5yl/R637g2917vm+rVmB91+bt5ufwe2+qzBkg15AHp9dd8qBdj/qnLt/m+3O/9vN/5+6o+
+/56a/oy9q39H9/qkAVINeUD6emxem63PdvP+DPSrrub+PPXRfCUHBEg15AGp23y8ytBuPmLu
+P9z9/Rp1YJdPHSDVkGWQzE3djuvxyQOkGjIFye7FM9KBAVINGUC63l9bMF92s83173ek14M6
+fPoAqYYMIH3aV+2aF/BM8yLDv78f7N7Vx8GtPmuAVEMGkNo3j96azeYtJXX5Mb+X5n0kfrg7
+JkCqIUNI5t37ZIN6+9Pz9vhkAz/cHRIgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEi
+ECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAg
+ESIQIBEiECARIhAgESIQIBEiECARIhAgESIQIBEiECARIhAgESKQ/4vsSVe8nIICAAAAAElF
+TkSuQmCC"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="c1">#install.packages(&quot;rAmCharts&quot;)</span>
+<span class="c1">#library(&quot;rAmCharts&quot;)</span>
+<span class="c1">#amTimeSeries(pr_df, &#39;Date&#39;, c(&#39;prev&#39;, &#39;co2&#39;))</span>
+<span class="c1">#Cette représentation sera faite sur R Studio et Shiny</span>
+</pre></div>
+
+</div>
 </div>
 </div>
 
@@ -12591,7 +13215,7 @@ df<span class="o">$</span>ext_co<span class="o">&lt;-</span><span class="kc">NUL
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>fichier_donnees<span class="o">=</span><span class="kp">paste</span><span class="p">(</span>DATA_PATH<span class="p">,</span>DATA_FILE_OUT<span class="p">,</span>sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>

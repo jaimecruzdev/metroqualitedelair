@@ -29,13 +29,25 @@ load_import<-function()
 {
   if (CT_INSTALL_PACKS==TRUE)
   {
+    install.packages("tidyverse")
     install.packages("zoo")
+    install.packages("plyr")
+    install.packages("data.table")
+    install.packages("FactoMineR")
+    install.packages("https://cran.r-project.org/bin/windows/contrib/3.6/foreign_0.8-76.zip")
+    install.packages("VIM")
+    install.packages("missForest")
+    install.packages("missMDA")
   }  
   
   library(tidyverse)
   library(zoo)
   library(plyr)
   library(data.table)
+  library(FactoMineR)
+  library(VIM)
+  library(missForest)
+  library(missMDA)
 }
 
 ############################################
@@ -47,20 +59,28 @@ load_symbols<-function()
   #Install packages, premier fois à exécuter?
   CT_INSTALL_PACKS<<-FALSE
   
+  #Montrer exploration, normalment pas trop practique sur le pipeline d'exécution.
+  #Plutôt sur un Notebook.
+  CT_SHOW_EXPLORATIONS<<-FALSE
+  
   #Modules fonctionnelles à exécuter
   CT_EXE_RECUP_DONNEES<<-FALSE
   CT_EXE_EX_PR_DONNEES<<-FALSE
   CT_EXE_PREP_DONNEES<<-FALSE
   CT_EXE_EXPLR_DONNEES<<-FALSE
   CT_EXE_MODEL_DONNEES<<-FALSE
+  CT_EXE_EX_PR_AVANT_MODEL<<-FALSE
+  CT_EXE_MODEL<<-TRUE
   
   #Paths
   
   #Chemins du code
-  CT_PATH_CODE<-"Code"
+  CT_PATH_CODE<<-"Code"
   CT_PATH_CODE_RECUP<<-paste(CT_PATH_CODE,"Recuperation des donnees",sep="/")
   CT_PATH_CODE_EXPL<<-paste(CT_PATH_CODE,"Exploration des donnees",sep="/")
   CT_PATH_CODE_PREP<<-paste(CT_PATH_CODE,"Preparation des donnees",sep="/")
+  CT_PATH_CODE_MODEL<<-paste(CT_PATH_CODE,"Modelisation",sep="/")
+  
   
   #chemins des données
   CT_PATH_DATA<<-"Data"
@@ -77,8 +97,11 @@ load_symbols<-function()
   CT_FICHIER_8<<-c("QairExtDuJourAuxHeures.R",CT_PATH_CODE_PREP)
   CT_FICHIER_9<<-c("CorrelationQuatreSources.r",CT_PATH_CODE_PREP)
   CT_FICHIER_10<<-c("Explore base merge.R",CT_PATH_CODE_EXPL)
+  CT_FICHIER_11<<-c("Exploration pre model.R",CT_PATH_CODE_EXPL)
+  CT_FICHIER_12<<-c("Preparation des valeurs manquantes.R",CT_PATH_CODE_PREP)
+  CT_FICHIER_12<<-c("modeling.R",CT_PATH_CODE_MODEL)
   
-  CT_LIST_FICHIERS<<-list(CT_FICHIER_1,CT_FICHIER_2,CT_FICHIER_3,CT_FICHIER_4,CT_FICHIER_5,CT_FICHIER_6,CT_FICHIER_7,CT_FICHIER_8,CT_FICHIER_9,CT_FICHIER_10)
+  CT_LIST_FICHIERS<<-list(CT_FICHIER_1,CT_FICHIER_2,CT_FICHIER_3,CT_FICHIER_4,CT_FICHIER_5,CT_FICHIER_6,CT_FICHIER_7,CT_FICHIER_8,CT_FICHIER_9,CT_FICHIER_10,CT_FICHIER_11,CT_FICHIER_12)
 }
 
 ###################
@@ -99,7 +122,9 @@ main<-function()
     preparation_des_donnees()
   if (CT_EXE_EXPLR_DONNEES)
     exploration_des_donnees()
-  if (CT_EXE_MODEL_DONNEES)
+  if (CT_EXE_EX_PR_AVANT_MODEL)
+    preparation_avant_model()
+  if (CT_EXE_MODEL)
     modelisation()
 }
 
@@ -138,8 +163,11 @@ recuperation_des_donnees <-function()
 ###############################################
 explor_prev_des_donnees <-function()
 {
-  #explorer_qair_RATP()
-  #explore_heures_RATP()
+  if (CT_SHOW_EXPLORATIONS==TRUE)
+  {
+    explorer_qair_RATP()
+    explore_heures_RATP()
+  }
 }
 
 #############################
@@ -153,16 +181,32 @@ preparation_des_donnees <-function()
   join_all_sources()
 }
 
-#############################
-# EXPLORATION DES DONNEES #
-############################
+##################################################
+# EXPLORATION ET PREPARATION AVANT MODELISATION #
+#################################################
 exploration_des_donnees <-function()
 {
-  explorer_NAs()
+  if (CT_SHOW_EXPLORATIONS==TRUE)
+  {
+    explorer_NAs()
+    exploration_des_trous()
+  }
+  
+  explore_prepare_before_model()
+}
+
+########################################
+# DERNIERE PREPARATION AVANT LE MODEL #
+#######################################
+preparation_avant_model <- function()
+{
+  imputation_des_trous()
 }
 
 #############################
 # MODELISATION #
 ############################
 modelisation <-function()
-{}
+{
+  modeling()
+}
