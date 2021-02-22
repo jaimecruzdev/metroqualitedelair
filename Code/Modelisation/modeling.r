@@ -19,10 +19,21 @@ modeling<-function()
   #transform type of data
   df<-prepare_data(df,var_mod_date,var_mod_quant,var_mod_qual,var_mod_bool)
   
+  #Rajouter les variables cibles à prédire en amont.
+  #On aura 12 heures, 24 heures et une semaine
+  list_other_cibles<-c(12,24,7*24)
+  var_noms_other_cibles<-lapply(list_other_cibles,generer_var_nom)
+  df<-rajoute_cibles(df,var_mod_cible,list_other_cibles)
+    
+  #Rajouter variables "lagées" 
+  
   #split données d'entrainement et test
   deux_dfs<- split_X_Y(df,var_mod_cible,var_mod_quant,var_mod_qual,var_mod_bool)
-  df_train<-deux_dfs[1]
-  df_test<-deux_dfs[2]
+  
+  #"standardisation" des données
+  df_norm<-deux_dfs
+  df_norm$train<-scale_data(deux_dfs$train,var_mod_quant,var_mod_cible)
+  df_norm$test<-scale_data(deux_dfs$test,var_mod_quant,var_mod_cible)
   
   #entrainement et prédictions
   train_and_predict(var_mode_cible,df_train,df_test)
@@ -31,6 +42,13 @@ modeling<-function()
   
   #return (df)
 }
+
+#A partir d'une variable cible et un integer il donne le nom de la variable.
+generer_var_nom<-function(par_raj,par_var_cible="co2")
+{
+  paste(par_var_cible,par_raj,sep="_")
+}  
+
 
 #Preparer chacune des variables pour le modèle
 prepare_data<-function(par_df,par_var_mod_date,par_var_mod_quant,par_var_mod_qual,par_var_mod_bool)
@@ -52,11 +70,36 @@ prepare_data<-function(par_df,par_var_mod_date,par_var_mod_quant,par_var_mod_qua
   return (ret_df)
 }
 
+#Rajouter variables à prédire dans notre dataframe
+rajoute_cibles<-function(par_df,par_var_cible="co2",par_list_cibles)
+{
+  ret_df<-par_df
+  
+  var_noms_cibles<-lapply(list_cibles,generer_var_nom)
+  
+  #Nous nous assurons de l'ordre par date d'abord
+  ret_df <-ret_df[order(ret_df$Date_Heure_Local),]
+  
+  #on lag !
+  for (ind_lead in par_list_cibles)
+  {
+    var_nom_col=generer_var_nom(ind_lead)
+    ret_df[,var_nom_col]<-lead(ret_df[,par_var_cible],ind_lead)
+  }    
+  
+  #on doit supprimer les NA qu'on pourra pas prédire en tout cas
+  #print(tail(ret_df[,c("Date_Heure_Locale","co2",unlist(var_noms_cibles))]))
+  
+  ret_df<-na.omit(ret_df)
+  
+  return (ret_df)
+}
+
 #Séparer les jeux de données d'entrainement et test avec les variables à modèliser
 split_X_Y<-function(par_df,par_var_mod_cible,par_var_mod_quant,par_var_mod_qual,par_var_mod_bool)
 {
   #données avec les variables à modéliser
-  df_vars<-par_df[c(par_var_mod_quant,par_var_mod_qual,par_var_mod_bool)]
+  df_vars<-par_df[c(par_var_mod_cible,par_var_mod_quant,par_var_mod_qual,par_var_mod_bool)]
   
   #condition de split pour le train
   cond_TRAIN=df_vars$Annee<2019
@@ -67,7 +110,26 @@ split_X_Y<-function(par_df,par_var_mod_cible,par_var_mod_quant,par_var_mod_qual,
   #test data
   ret_df_test<-df_vars[-cond_TRAIN,]
   
-  return (list(ret_df_train,ret_df_test))
+  return (list(train=ret_df_train,test=ret_df_test))
+}
+
+#standardise data
+scale_data<-function(par_df,par_var_mod_quant,par_var_mod_cible)
+{
+  ret_df<-par_df
+  
+  #variable cible
+  #ret_df[par_var_mod_cible]<-scale(ret_df[par_var_mod_cible])
+  ret_df$co2<-scale(ret_df$co2)
+  
+  #variables quantitatives
+  ret_df[par_var_mod_quant]<-scale(ret_df[par_var_mod_quant])
+  
+  #This is how we'll got back unscale data
+  #Unscaled_Pred <- predict(Mod, cars) * sd(cars$speed) + mean(cars$speed)
+  
+  return (ret_df)
+  
 }
 
 #Créer le modèles et prédire
