@@ -85,6 +85,7 @@ load_symbols<-function()
   #chemins des données
   CT_PATH_DATA<<-"Data"
   CT_PATH_DATA_PREP<<-paste(CT_PATH_DATA,"Prepared",sep="/")
+  CT_PATH_DATA_OUT<<-paste(CT_PATH_DATA,"out",sep="/")
   
   # Fichiers du projet
   CT_FICHIER_1<<-c("workingProjet.R",CT_PATH_CODE_RECUP)
