@@ -1,5 +1,0 @@
-"var_cible","heure_pred","Methode","MAPE","RMSE"
-co2,0,RLM,3.6,4.79
-co2,12,RLM,6.83,9.04
-co2,24,RLM,7.19,9.39
-co2,168,RLM,9.16,11.41

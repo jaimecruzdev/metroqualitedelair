@@ -39,6 +39,9 @@ load_import<-function()
     install.packages("missForest")
     install.packages("missMDA")
     install.packages("leaps")
+    install.packages("glmnet")
+    install.packages("rpart")
+    install.packages("randomForest")
   }  
   
   library(tidyverse)
@@ -50,6 +53,9 @@ load_import<-function()
   library(missForest)
   library(missMDA)
   library(leaps)
+  library(glmnet)
+  library(rpart)
+  library(randomForest)
 }
 
 ############################################
