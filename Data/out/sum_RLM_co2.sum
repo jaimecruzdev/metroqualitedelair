@@ -1,0 +1,61 @@
+
+Call:
+lm(formula = formRL, data = par_df_train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-272.994  -10.687   -0.414   10.109  272.199 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                  -2.510e+03  2.221e+02 -11.299  < 2e-16 ***
+Heure_Local                   6.767e-01  2.522e-02  26.833  < 2e-16 ***
+Annee                         1.301e+00  1.106e-01  11.763  < 2e-16 ***
+Mois                          7.239e-01  2.167e-01   3.340 0.000837 ***
+Semaine_de_lannee            -1.920e-01  4.946e-02  -3.882 0.000104 ***
+Jour_de_la_Semaine           -4.166e-01  9.664e-02  -4.310 1.63e-05 ***
+pluie_3_heures                8.116e-02  1.525e-01   0.532 0.594706    
+temperature_celsius           7.986e-01  5.498e-02  14.527  < 2e-16 ***
+pression                     -4.007e-04  1.692e-04  -2.368 0.017900 *  
+direction_vent_10mn          -1.003e-03  1.436e-03  -0.699 0.484686    
+temps_present_num             5.203e-03  1.698e-02   0.306 0.759286    
+type_tendance_barometrique   -2.147e-01  5.537e-02  -3.877 0.000106 ***
+vitesse_vent_10mn             8.389e-01  8.731e-02   9.608  < 2e-16 ***
+nebulosite_totale            -8.238e-03  4.745e-03  -1.736 0.082503 .  
+temperature                  -9.875e-01  7.761e-02 -12.724  < 2e-16 ***
+no                            2.031e-01  4.642e-03  43.745  < 2e-16 ***
+no2                           3.965e-02  9.507e-03   4.170 3.05e-05 ***
+humidite                     -1.048e-01  1.741e-02  -6.018 1.78e-09 ***
+particules_fines              1.759e-01  3.992e-03  44.067  < 2e-16 ***
+ext_pm25                     -4.773e-02  8.276e-03  -5.768 8.11e-09 ***
+ext_pm10                      1.697e-02  1.356e-02   1.252 0.210727    
+ext_o3                        2.691e-02  1.640e-02   1.641 0.100828    
+ext_no2                      -2.960e-02  1.718e-02  -1.723 0.084904 .  
+co2_lag_jr_1                  6.070e-01  2.332e-02  26.036  < 2e-16 ***
+co2_lag_jr_5                 -8.100e-03  8.623e-03  -0.939 0.347559    
+co2_lag_jr_9                  8.998e-02  2.791e-03  32.245  < 2e-16 ***
+co2_lag_jr_13                -2.056e-02  2.747e-03  -7.487 7.22e-14 ***
+co2_lag_jr_17                 1.342e-02  2.748e-03   4.882 1.05e-06 ***
+co2_lag_jr_21                 1.395e-01  2.744e-03  50.828  < 2e-16 ***
+co2_lag_jr_act_1              2.763e-01  2.348e-02  11.767  < 2e-16 ***
+co2_lag_jr_act_2             -4.260e-01  6.894e-03 -61.801  < 2e-16 ***
+co2_lag_jr_act_3              1.450e-01  5.403e-03  26.832  < 2e-16 ***
+co2_lag_jr_act_5              1.923e-02  8.639e-03   2.226 0.025993 *  
+temps_presentBrouillard      -1.839e+00  1.248e+00  -1.473 0.140678    
+temps_presentBruine          -3.513e-01  1.255e+00  -0.280 0.779611    
+temps_presentBrume           -2.911e+00  1.303e+00  -2.235 0.025456 *  
+temps_presentClairs          -1.633e+00  1.118e+00  -1.460 0.144304    
+temps_presentNeige            1.721e+00  3.080e+00   0.559 0.576350    
+temps_presentNuages          -2.375e+00  1.103e+00  -2.152 0.031373 *  
+temps_presentOrage            1.044e-01  2.102e+00   0.050 0.960378    
+temps_presentPluie           -8.741e-01  1.029e+00  -0.849 0.395685    
+Conges_Escolaire_Zone_CTRUE   1.934e+00  4.547e-01   4.254 2.11e-05 ***
+Conges_Escolaire_Zone_ABTRUE  4.157e-01  4.195e-01   0.991 0.321782    
+jour_activiteTRUE            -1.025e+00  4.252e-01  -2.410 0.015945 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 23.56 on 34750 degrees of freedom
+Multiple R-squared:  0.8367,	Adjusted R-squared:  0.8365 
+F-statistic:  4141 on 43 and 34750 DF,  p-value: < 2.2e-16
+

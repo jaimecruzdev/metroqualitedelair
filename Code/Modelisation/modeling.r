@@ -1,5 +1,27 @@
+###########################################################
+# Ce module va entrainer l'ensemble des modèles choisis. #
+# Comme sortie il va générer plusieurs fichiers :        #
+#                                                        #
+#     1. Summary description                             #
+#     2. Prédictions                                     #
+#     3. Evaluations des modèles                         #
+#     4. rds des modèles afin de pouvoir les reprendre   # 
+#                                                        #
+# Variantes à travailler :                               #
+#                                                        #
+#     1. Variable à prédire.                             #
+#     2. Sources des variables, écarter les var. ext ?   #
+#     3. Variables laggées ?                             #
+#     4. Type de Modèle.                                 #
+#     5. Normalisation des variables                     #
+#     6. Selection des variables selon p-critiques       #
+#                                                        #
+##########################################################
+
 modeling<-function()
 {
+  print("Go modeling !")
+  
   #read data
   DATA_FILE_IN_PCA<-"data_model_PCA.csv"
   DATA_FILE_IN_RF<-"data_model_RF.csv"
@@ -9,6 +31,7 @@ modeling<-function()
   df<-read.csv(fichier_donnees)
   
   #organisation des variables
+  var_mod_idx<-"Date_Heure_Locale"
   var_mod_cible<-c("co2")
   var_mod_date<-c("Date_Heure_Locale","Timestamp")
   var_mod_quant<-c("Heure_Local","Annee","Mois","Semaine_de_lannee","Jour_de_la_Semaine","pluie_3_heures","temperature_celsius","pression","direction_vent_10mn","temps_present_num","type_tendance_barometrique","vitesse_vent_10mn","nebulosite_totale","temperature","no","no2","humidite","particules_fines","ext_pm25","ext_pm10","ext_o3","ext_no2")
@@ -22,18 +45,49 @@ modeling<-function()
   #Rajouter les variables cibles à prédire en amont.
   #Par exemple, on aura 12 heures, 24 heures et une semaine
   list_other_cibles<-c(12,24,7*24)
-  var_noms_other_cibles<-lapply(list_other_cibles,generer_var_nom)
+  var_noms_other_cibles<-unlist(lapply(list_other_cibles,generer_var_nom))
   df<-add_Y_vars(df,var_mod_cible,list_other_cibles)
-    
+  
   #Rajouter variables "lagées" horaire 
   list_deepness<-c(1,5,9,13,17,21)
   lag_order<-order(df$Date_Heure_Local,df$Heure_Local)
-  df<-add_lagged_vars(df,var_mod_cible,list_deepness,with(df,lag_order),"_hr_")
-
+  ret_lag<-add_lagged_vars(df,var_mod_cible,list_deepness,with(df,lag_order),"_jr_")
+  df<-ret_lag$df_lagged
+  var_mod_lag_x_jr<-ret_lag$lag_col_names #variables to add to the model
+  
   #Rajouter variables "lagées" des jours précédents ouvrés / non-ouvrés à la même heure. 
   list_deepness<-c(1,2,3,5)
   lag_order<-order(df$jour_activite,df$Date_Heure_Local,df$Heure_Local)
-  df<-add_lagged_vars(df,var_mod_cible,list_deepness,with(df,lag_order),"_jr_act_")
+  ret_lag<-add_lagged_vars(df,var_mod_cible,list_deepness,with(df,lag_order),"_jr_act_")
+  df<-ret_lag$df_lagged
+  var_mod_lag_x_jr_act<-ret_lag$lag_col_names #variables to add to the model
+  
+  ################################################################################
+  ######  variables qui gerent la préparation des variables à entrainer ##########
+  ################################################################################
+  
+  #Modeles
+  var_mod<-"RLM"
+  
+  #Exécution de l'ensemble des tests
+  var_mod_list_Y <- c(var_mod_cible,var_noms_other_cibles)
+  
+  #Utiliser les variables laggées ?
+  var_mod_lag <- TRUE
+  
+  #Normaliser les variables
+  var_mod_normal <- FALSE
+  
+  #Selection de automtic des variables: critère BIC
+  var_mod_BIC <- FALSE
+  
+  ############################################################
+  
+  if (var_mod_lag==TRUE)
+  {
+    #Ajouter les variables laggées aux quantitatives du modèle
+    var_mod_quant<-c(var_mod_quant,var_mod_lag_x_jr,var_mod_lag_x_jr_act)
+  }
   
   #on doit supprimer les NA générés suite aux "lagges et leads" dont on ne pourra pas s'en servir
   df<-na.omit(df)
@@ -41,24 +95,70 @@ modeling<-function()
   df<-df[with(df,order(Date_Heure_Locale)),]
   
   #split données d'entrainement et test
-  deux_dfs<- split_X_Y(df,var_mod_cible,var_mod_quant,var_mod_qual,var_mod_bool)
+  deux_dfs<-split_X_Y(df,c(var_mod_cible,var_noms_other_cibles),var_mod_quant,var_mod_qual,var_mod_bool)
   
-  #"standardisation" des données
-  df_norm<-deux_dfs
-  df_norm$train<-scale_data(deux_dfs$train,var_mod_quant,var_mod_cible)
-  df_norm$test<-scale_data(deux_dfs$test,var_mod_quant,var_mod_cible)
+  if (var_mod_normal==TRUE)
+  {
+    #"standardisation" des données
+    deux_dfs$train<-scale_data(deux_dfs$train,var_mod_quant,c(var_mod_cible,var_noms_other_cibles))
+    deux_dfs$test<-scale_data(deux_dfs$test,var_mod_quant,c(var_mod_cible,var_noms_other_cibles))
+  }
   
-  #entrainement et prédictions
-  df_results<-train_and_predict(c(var_mod_cible,var_noms_other_cibles),deux_dfs$train,deux_dfs$test)
+  #Préparer les index (var_mod_idx) avec les dates afin de les rajouter aux données prédites et leur donner du sens.
+  idx_date<-df[!deux_dfs$split_cond,var_mod_idx]
   
-  #Rajoute les prédictions
-  eval<-evaluate("RLM",df_results)
+  #######
+  # GO! #
+  #######
   
-  write.csv(eval,paste(CT_PATH_DATA_OUT,"evaluations.csv",sep="/"),row.names=FALSE)
+  #Créer liste des évaluations
+  evaluations <- list(Var_Y=NA,Methode=NA,MAPE=NA,RMSE=NA)[0]
   
-  print("au revoir")
+  #sauver les cibles et les supprimmer
+  cibles_train_Y<-deux_dfs$train[var_mod_list_Y]
+  cibles_test_Y<-deux_dfs$test[var_mod_list_Y]
   
-  return (df_results)
+  deux_dfs$train<-select(deux_dfs$train,select=-all_of(var_mod_list_Y))
+  deux_dfs$test<-select(deux_dfs$test,select=-all_of(var_mod_list_Y))
+  
+  for (var_Y in var_mod_list_Y)
+  {
+    #supprime les variables cibles qu'on rajoutera pour chaque modèle
+    train_df<-cbind(cibles_train_Y[var_Y],deux_dfs$train)
+    test_df<-cbind(cibles_test_Y[var_Y],deux_dfs$test)
+    
+    #### extraire cible et heures en avance de prediction
+    list_cible<-strsplit(var_Y,"_")
+    
+    var_cible<-unlist(list_cible)[1]
+    heure_pred<-unlist(list_cible)[2]
+    
+    if (is.na(heure_pred))
+    {
+      heure_pred="0"
+    }
+    
+    ##Selection des variables sous le critère BIC
+    if (var_mod_BIC==TRUE)
+    {
+      #select variables
+      sel_dfs<-select_vars(var_Y,train_df,test_df)
+      train_df<-sel_dfs$train
+      test_df<-sel_dfs$test
+    }
+    
+    ##### entrainement et prédictions #####
+    df_results<-train_and_predict(var_Y,train_df,test_df,idx_date,var_mod,var_mod_BIC)
+    
+    #Rajoute les évaluations pour ce modèle
+    evaluations<-rbind(evaluations,cbind(var_cible,heure_pred,(evaluate(var_mod,df_results,var_mod_BIC))))
+  }
+  
+  dump_evaluations(evaluations)
+  
+  print("Fin du traitement des données")
+  
+  return (train_df)
 }
 
 #A partir d'une variable cible et un integer il donne le nom de la variable.
@@ -93,8 +193,6 @@ add_Y_vars<-function(par_df,par_var_cible="co2",par_list_cibles)
 {
   ret_df<-par_df
   
-  #var_noms_cibles<-lapply(par_list_cibles,generer_var_nom)
-  
   #Nous nous assurons de l'ordre par date d'abord
   ret_df <-ret_df[order(ret_df$Date_Heure_Local),]
   
@@ -113,16 +211,22 @@ add_lagged_vars<-function(df,par_var_cible,list_deepness,order_index,ident="_hr_
 {
   ret_df<-df[order_index,]
   
+  lag_names<-c()
+  
   for (ind_lead in list_deepness)
   {
     var_nom_col=generer_var_nom(ind_lead,separ=paste0("_lag",ident))
+    lag_names<-c(lag_names,var_nom_col)
     ret_df[,var_nom_col]<-lag(ret_df[,par_var_cible],ind_lead)
-  }  
+  }
   
-  return (ret_df)
+  ret_list<-list(df_lagged=ret_df,lag_col_names=lag_names)
+  
+  return (ret_list)
 }
 
 #Séparer les jeux de données d'entrainement et test avec les variables à modèliser
+#On va retourner une liste avec 3 éléments : les df de train, de test et aussi la condition de split.
 split_X_Y<-function(par_df,par_var_mod_cible,par_var_mod_quant,par_var_mod_qual,par_var_mod_bool)
 {
   #données avec les variables à modéliser
@@ -131,13 +235,13 @@ split_X_Y<-function(par_df,par_var_mod_cible,par_var_mod_quant,par_var_mod_qual,
   #condition de split pour le train
   cond_TRAIN=df_vars$Annee<2019
   
-  #train data
+  #train data, pas besoin des dates ici
   ret_df_train<-df_vars[cond_TRAIN,]
   
   #test data
-  ret_df_test<-df_vars[-cond_TRAIN,]
+  ret_df_test<-df_vars[!cond_TRAIN,]
   
-  return (list(train=ret_df_train,test=ret_df_test))
+  return (list(train=ret_df_train,test=ret_df_test,split_cond=cond_TRAIN))
 }
 
 #standardise data
@@ -146,8 +250,8 @@ scale_data<-function(par_df,par_var_mod_quant,par_var_mod_cible)
   ret_df<-par_df
   
   #variable cible
-  #ret_df[par_var_mod_cible]<-scale(ret_df[par_var_mod_cible])
-  ret_df$co2<-scale(ret_df$co2)
+  ret_df[par_var_mod_cible]<-scale(ret_df[par_var_mod_cible])
+  #ret_df$co2<-scale(ret_df$co2)
   
   #variables quantitatives
   ret_df[par_var_mod_quant]<-scale(ret_df[par_var_mod_quant])
@@ -159,26 +263,62 @@ scale_data<-function(par_df,par_var_mod_quant,par_var_mod_cible)
   
 }
 
+#selection des variables selon le critère BIC pour notre modèle. Il retournera les df train et test.
+select_vars<-function(par_var_Y,par_df_train,par_df_test)
+{
+  #on cherche les meilleurs colonnes
+  formula <- as.formula(paste(par_var_Y, ' ~ .' ))
+  recherche <- regsubsets(formula, int = T,nbest = 1, method = "exhaustive", data = par_df_train)
+  resume <- summary(recherche)
+  nomselec <- colnames(resume$which)[resume$which[which.min(resume$bic),]][-1]
+  nomselec <- c(par_var_Y,nomselec)#plus Y
+  
+  #Les noms des variables qualitatives sont modifiés avec un SUFIX TRUE ou FALSE.
+  #Nous les traitons pour enlever ce sufix, nous ne sommes intéréssés que au noms originaux.
+  nomselec<-str_replace(nomselec,"TRUE|FALSE","")
+  
+  #nouveaux df
+  ret_df_train<-par_df_train[nomselec]
+  ret_df_test<-par_df_test[nomselec]
+  
+  #return
+  return (list(train=ret_df_train,test=ret_df_test))
+}
+
 #Créer le modèles et prédire
-train_and_predict<-function(par_list_Y,par_df_train,par_df_test)
+train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE)
 {
   #fist Y
-  the_Y<-unlist(par_list_Y[1])
+  #the_Y<-unlist(par_list_Y[1])
+  the_Y<-par_Y
+  
+  #Sufix pour la selection du modèle
+  if (par_sel_mod==TRUE)
+  {
+    par_sel_mod<-"msel"
+  }
+  else
+  {
+    par_sel_mod<-""
+  }
   
   #########  train ##############
   
   print(paste0("Training for ",the_Y))
   
   #work
-  #mod_reg<-lm(co2~.,par_df_train)
   formRL<-paste0(the_Y,"~.")
   mod_reg<-lm(formRL,par_df_train)
+  
   #show
-  sink(paste(CT_PATH_DATA_OUT,"mod_rl_co2.txt",sep="/"))
+  nom_fichier_sum<-paste0("sum_",par_mod,"_",the_Y,par_sel_mod,".sum")
+  sink(paste(CT_PATH_DATA_OUT,nom_fichier_sum,sep="/"))
   print(summary(mod_reg))
   sink()
+  
   #and save
-  saveRDS(mod_reg, file = paste(CT_PATH_DATA_OUT,"mod_rl_co2.rds",sep="/"))
+  nom_fichier_rds<-paste0("mod_",par_mod,"_",the_Y,".rds")
+  saveRDS(mod_reg, file = paste(CT_PATH_DATA_OUT,nom_fichier_rds,sep="/"))
   
   #########  train ##############
   
@@ -186,10 +326,13 @@ train_and_predict<-function(par_list_Y,par_df_train,par_df_test)
   
   predict_Y<-predict(mod_reg,par_df_test)
   
-  res<-cbind(real=par_df_test[the_Y],predicted=predict_Y,error=round(get_error(par_df_test[the_Y],predict_Y),2))
-  names(res)<-c("real","predicted","error")
+  #We're adding the local date and time as reference for each prediction
+  res<-cbind(Date_Heure_Locale=par_var_idx,real=par_df_test[the_Y],predicted=predict_Y,error=round(get_error(par_df_test[the_Y],predict_Y),2))
+  names(res)<-c("Date_Heure_Locale","real","predicted","error")
   
-  write.csv(res,paste(CT_PATH_DATA_OUT,"pred_rl_co2.csv",sep="/"),row.names=FALSE)
+  #Ecrire dans le fichier
+  nom_fichier_pred<-paste0("pred_",par_mod,"_",the_Y,".csv")
+  write.csv(res,paste(CT_PATH_DATA_OUT,nom_fichier_pred,sep="/"),row.names=FALSE)
   
   ###########  predicting  ############
   
@@ -204,12 +347,12 @@ get_error<-function(par_real,par_predicted)
 }
 
 #Evaluations des prédictions
-evaluate<-function(par_meth="RLM",par_res)
+evaluate<-function(par_meth="RLM",par_res,par_sel_mod)
 {
   mape_res<-get_MAPE(par_res)
   rmse_res<-get_RMSE(par_res)
   
-  ret_eval<-cbind(Methode=par_meth,MAPE=mape_res,RMSE=rmse_res)
+  ret_eval<-cbind(Methode=par_meth,Sel_Model=par_sel_mod,MAPE=round(mape_res,2),RMSE=round(rmse_res,2))
   
   return (ret_eval)
 }
@@ -217,7 +360,7 @@ evaluate<-function(par_meth="RLM",par_res)
 #MAPE
 get_MAPE<-function(res)
 {
-  ret_MAPE<-sum(res$error)/nrow(res)
+  ret_MAPE<-100*(sum(res$error)/nrow(res))
   
   return (ret_MAPE)
 }
@@ -225,7 +368,17 @@ get_MAPE<-function(res)
 #RMSE
 get_RMSE<-function(res)
 {
-  ret_RMSE<-sqrt((sum((res$error)^2))/nrow(res))
+  ret_RMSE<-100*(sqrt((sum((res$error)^2))/nrow(res)))
   
   return (ret_RMSE)
+}
+
+#Ecrire dans les fichiers correspondants les évaluations
+dump_evaluations<-function(evaluations)
+{
+  #version analyse
+  write.csv(evaluations,paste(CT_PATH_DATA_OUT,"evaluations_analyse.csv",sep="/"),row.names=FALSE)
+  
+  #version shiny
+  write.csv(evaluations[,c("var_cible","heure_pred","Methode","MAPE","RMSE")],paste(CT_PATH_DATA_OUT,"evaluations.csv",sep="/"),row.names=FALSE)
 }

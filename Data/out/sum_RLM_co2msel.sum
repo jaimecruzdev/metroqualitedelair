@@ -1,0 +1,26 @@
+
+Call:
+lm(formula = formRL, data = par_df_train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-267.796  -10.991   -0.626   10.373  278.624 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      55.239932   1.697560   32.54   <2e-16 ***
+Heure_Local       0.805068   0.022330   36.05   <2e-16 ***
+no                0.160400   0.003175   50.52   <2e-16 ***
+particules_fines  0.178008   0.003768   47.24   <2e-16 ***
+co2_lag_jr_1      0.897215   0.005458  164.38   <2e-16 ***
+co2_lag_jr_9      0.066579   0.002453   27.14   <2e-16 ***
+co2_lag_jr_21     0.145274   0.002441   59.51   <2e-16 ***
+co2_lag_jr_act_2 -0.420604   0.006834  -61.55   <2e-16 ***
+co2_lag_jr_act_3  0.145964   0.004725   30.89   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 23.96 on 34785 degrees of freedom
+Multiple R-squared:  0.831,	Adjusted R-squared:  0.831 
+F-statistic: 2.139e+04 on 8 and 34785 DF,  p-value: < 2.2e-16
+

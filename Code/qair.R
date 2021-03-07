@@ -38,6 +38,7 @@ load_import<-function()
     install.packages("VIM")
     install.packages("missForest")
     install.packages("missMDA")
+    install.packages("leaps")
   }  
   
   library(tidyverse)
@@ -48,6 +49,7 @@ load_import<-function()
   library(VIM)
   library(missForest)
   library(missMDA)
+  library(leaps)
 }
 
 ############################################
