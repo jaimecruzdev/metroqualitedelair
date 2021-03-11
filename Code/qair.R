@@ -42,6 +42,7 @@ load_import<-function()
     install.packages("glmnet")
     install.packages("rpart")
     install.packages("randomForest")
+    install.packages("gbm")
   }  
   
   library(tidyverse)
@@ -56,6 +57,7 @@ load_import<-function()
   library(glmnet)
   library(rpart)
   library(randomForest)
+  library(gbm)
 }
 
 ############################################

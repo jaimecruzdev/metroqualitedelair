@@ -7,3 +7,14 @@ Présentation:
 - Exécution de l'ensemble du projet dans une pipeline.
 - Interpolation des températures trihoraires
 - Etude des valeur manquantes et décisions prises.
+
+--------------------------
+
+Questions: 
+
+1. Normalisation
+2. Année
+3. Resultats NO2
+4. VC sur train et test ?
+
+jcruzmena

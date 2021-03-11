@@ -69,7 +69,9 @@ modeling<-function(var_mod_cible="co2")
   ################################################################################
   
   #Modeles
-  list_var_mods<-c("RLM","Ridge","Lasso","RF")
+  #list_var_mods<-c("RLM","Ridge","Lasso","RF")
+  #list_var_mods<-c("RLM","Ridge","Lasso","GB")
+  list_var_mods<-c("GB")
   
   #Exécution de l'ensemble des tests
   var_mod_list_Y <- c(var_mod_cible,var_noms_other_cibles)
@@ -81,7 +83,7 @@ modeling<-function(var_mod_cible="co2")
   var_mod_normal <- FALSE
   
   #Selection de automtic des variables: critère BIC
-  var_mod_BIC <- TRUE
+  var_mod_BIC <- FALSE
   
   ############################################################
   
@@ -188,7 +190,8 @@ prepare_data<-function(par_df,par_var_mod_date,par_var_mod_quant,par_var_mod_qua
   ret_df[par_var_mod_qual]<-lapply(ret_df[par_var_mod_qual],factor)
   
   #Conversion de variables booleans
-  ret_df[par_var_mod_bool]<-lapply(ret_df[par_var_mod_bool],as.logical)
+  ret_df[par_var_mod_bool]<-lapply(ret_df[par_var_mod_bool],as.factor)
+  #ret_df[par_var_mod_bool]<-lapply(ret_df[par_var_mod_bool],as.logical)
   
   return (ret_df)
 }
@@ -335,6 +338,11 @@ train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,p
   {
     mod_reg<-randomForest(formRL,ntree=250,data=par_df_train)
   }
+  else if (model_tech=="GB")
+  {
+    mod_reg<-gbm(formRL,data=par_df_train,distribution="gaussian",cv.fold=5,shrinkage=0.01,n.trees=3000)
+    mopt.ada <- gbm.perf(mod_reg,method="cv")
+  }
   else #by default RLM
   {
     mod_reg<-lm(formRL,par_df_train)
@@ -359,9 +367,13 @@ train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,p
   {
     predict_Y <- predict(mod_reg, s = best_lambda, mat_x_test)
   }
+  else if (model_tech=="GB")
+  {
+    predict_Y <- predict(mod_reg,newdata=par_df_test,n.trees=mopt.ada)
+  }
   else #by default RLM
   {
-    predict_Y<-predict(mod_reg,par_df_test)
+    predict_Y <- predict(mod_reg,par_df_test)
   }
   
   #We're adding the local date and time as reference for each prediction
