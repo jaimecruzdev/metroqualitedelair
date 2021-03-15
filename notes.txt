@@ -10,11 +10,16 @@ Présentation:
 
 --------------------------
 
-Questions: 
-
-1. Normalisation
-2. Année
-3. Resultats NO2
-4. VC sur train et test ?
-
 jcruzmena
+
+---------------------
+
+Points modele:
+
+1. Format des variables : Factor, bool ? selon le modèle.
+2. X2, X3 et interactions ? => avant ou après regsubset
+3. hyperparamètres des modèles dans un tableau de bord sans changer une seule ligne de code
+4. 24 modèles horaire par type de modele RL, RF, GB...
+5. Factors avec levels qui n'éxistent pas au training pour prédire après
+
+

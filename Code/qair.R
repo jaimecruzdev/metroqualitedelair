@@ -80,7 +80,7 @@ load_symbols<-function()
   CT_EXE_EXPLR_DONNEES<<-FALSE
   CT_EXE_MODEL_DONNEES<<-FALSE
   CT_EXE_EX_PR_AVANT_MODEL<<-FALSE
-  CT_EXE_MODEL<<-TRUE
+  CT_EXE_MODEL<<-FALSE
   
   #Paths
   

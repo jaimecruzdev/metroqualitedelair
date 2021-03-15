@@ -18,7 +18,7 @@
 #                                                        #
 ##########################################################
 
-modeling<-function(var_mod_cible="co2")
+modeling<-function(var_mod_cible="particules_fines")
 {
   print("Go modeling !")
   
@@ -34,15 +34,23 @@ modeling<-function(var_mod_cible="co2")
   var_mod_idx<-"Date_Heure_Locale"
   var_mod_date<-c("Date_Heure_Locale","Timestamp")
   var_mod_quant<-c("co2","Heure_Local","Annee","Mois","Semaine_de_lannee","Jour_de_la_Semaine","pluie_3_heures","temperature_celsius","pression","direction_vent_10mn","temps_present_num","type_tendance_barometrique","vitesse_vent_10mn","nebulosite_totale","temperature","no","no2","humidite","particules_fines","ext_pm25","ext_pm10","ext_o3","ext_no2")
+  USE_CARRE<-TRUE #Utiliser aussi les quantitatives au carré 
+  USE_CUBE<-FALSE #Utiliser aussi les quantitatives au cube
   var_mod2_ext<-c("ext_pm25","ext_pm10","ext_o3","ext_no2")
   var_mod_qual<-c("temps_present")
   var_mod_bool<-c("Conges_Escolaire_Zone_C","Conges_Escolaire_Zone_AB","jour_activite")
   
   #Enleve la variable cible choisie des variables quantitatives
   var_mod_quant<-setdiff(var_mod_quant,var_mod_cible)
+  var_mod_quant<-setdiff(var_mod_quant,var_mod2_ext)
   
   #transform type of data
   df<-prepare_data(df,var_mod_date,var_mod_quant,var_mod_qual,var_mod_bool)
+  
+  #si défini on rajoute des variables polynomiales
+  poly_ret<-prepare_polyn(df,var_mod_quant,USE_CARRE,USE_CUBE)
+  df<-poly_ret$poly_df
+  var_mod_quant<-poly_ret$poly_quant_vars
   
   #Rajouter les variables cibles à prédire en amont.
   #Par exemple, on aura 12 heures, 24 heures et une semaine
@@ -69,9 +77,12 @@ modeling<-function(var_mod_cible="co2")
   ################################################################################
   
   #Modeles
+  list_var_mods<-c("RLM","Ridge","Lasso","GB","RF")
   #list_var_mods<-c("RLM","Ridge","Lasso","RF")
   #list_var_mods<-c("RLM","Ridge","Lasso","GB")
-  list_var_mods<-c("GB")
+  #list_var_mods<-c("GB")
+  #list_var_mods<-c("RF")
+  #list_var_mods<-c("RLM")
   
   #Exécution de l'ensemble des tests
   var_mod_list_Y <- c(var_mod_cible,var_noms_other_cibles)
@@ -84,6 +95,15 @@ modeling<-function(var_mod_cible="co2")
   
   #Selection de automtic des variables: critère BIC
   var_mod_BIC <- FALSE
+  
+  #Utiliser le modèle RDS s'il éxiste déjà ? 
+  use_RDS<-FALSE
+  
+  #avec interactions
+  use_interactions<-FALSE
+  
+  #24 modèles horaires différentes
+  use_hour_models<-TRUE
   
   ############################################################
   
@@ -154,7 +174,7 @@ modeling<-function(var_mod_cible="co2")
       }
       
       ##### entrainement et prédictions #####
-      df_results<-train_and_predict(var_Y,train_df,test_df,idx_date,var_mod,var_mod_BIC,var_mod)
+      df_results<-train_and_predict(var_Y,train_df,test_df,idx_date,var_mod,var_mod_BIC,par_use_rds=use_RDS,par_use_hourly=use_hour_models)
       
       #Rajoute les évaluations pour ce modèle
       evaluations<-rbind(evaluations,cbind(var_cible,heure_pred,(evaluate(var_mod,df_results,var_mod_BIC))))
@@ -190,10 +210,33 @@ prepare_data<-function(par_df,par_var_mod_date,par_var_mod_quant,par_var_mod_qua
   ret_df[par_var_mod_qual]<-lapply(ret_df[par_var_mod_qual],factor)
   
   #Conversion de variables booleans
-  ret_df[par_var_mod_bool]<-lapply(ret_df[par_var_mod_bool],as.factor)
-  #ret_df[par_var_mod_bool]<-lapply(ret_df[par_var_mod_bool],as.logical)
+  ret_df[par_var_mod_bool]<-lapply(ret_df[par_var_mod_bool],as.logical)
+  ret_df[par_var_mod_bool]<-lapply(ret_df[par_var_mod_bool],factor)
   
   return (ret_df)
+}
+
+#Rajouter les variables polynomiales si définifies
+prepare_polyn<-function(par_df,par_var_quant,par_carr,par_cub)
+{
+  ret_df=par_df
+  var_names_carr<-c()
+  var_names_cub<-c()
+  
+  if (par_carr==TRUE)
+  {
+    var_names_carr<-unlist(lapply(par_var_quant,FUN="paste0","_pol2"))
+    ret_df[,var_names_carr]<-(ret_df[,par_var_quant])^2
+  }
+  if (par_cub==TRUE)
+  {
+    var_names_cub<-unlist(lapply(par_var_quant,FUN="paste0","_pol3"))
+    ret_df[,var_names_cub]<-(ret_df[,par_var_quant])^3
+  }
+  
+  ret_new_vars<-c(par_var_quant,var_names_carr,var_names_cub) 
+  
+  return (list(poly_df=ret_df,poly_quant_vars=ret_new_vars))
 }
 
 #Rajouter variables à prédire dans notre dataframe
@@ -293,8 +336,9 @@ select_vars<-function(par_var_Y,par_df_train,par_df_test)
 }
 
 #Créer le modèles et prédire
-train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,model_tech)
+train_and_predict_old<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE,par_use_hourly=FALSE)
 {
+  model_tech=par_mod
   #fist Y
   #the_Y<-unlist(par_list_Y[1])
   the_Y<-par_Y
@@ -311,46 +355,72 @@ train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,p
   
   #########  train ##############
   
-  print(paste0("Training for ",the_Y," with ",model_tech))
+  #Où écrire ou récupérer notre fichier summary
+  nom_fichier_sum<-paste0("sum_",par_mod,"_",the_Y,par_sel_mod,".sum")
+  path_fich_sum<-paste(CT_PATH_DATA_OUT,nom_fichier_sum,sep="/")
   
-  #work
-  formRL<-as.formula(paste0(the_Y,"~."))
-  
-  ### Selon le type de modèle choisi
-  if (model_tech=="Ridge" | model_tech=="Lasso")
+  #Besion de s'etrainer ou on profiter du boulot déjà fait ?, S'il éxiste utilise le !
+  if (par_use_rds==TRUE & file.exists(path_fich_sum)==TRUE) 
   {
-    mat_x_train = model.matrix(formRL,data=par_df_train)[,-1]
-    y_train = par_df_train[,the_Y]
+    print(paste0("Got RDS model for ",the_Y," with ",model_tech," ",path_fich_sum))
+    mod_reg<-readRDS(path_fich_sum)
     
-    mat_x_test = model.matrix(formRL,data=par_df_test)[,-1]
-    
-    alphie<-ifelse(model_tech=="Ridge", 0, 1)
-    
-    # Using cross validation glmnet
-    ridge_cv <- cv.glmnet(mat_x_train, y_train, alpha = alphie)
-    
-    # Best lambda value
-    best_lambda <- ridge_cv$lambda.min
-    
-    mod_reg <- glmnet(mat_x_train, y_train, alpha = alphie, lambda = best_lambda)
+    #particularités des modèles s'il y éxistent
+    if (model_tech=="Ridge" | model_tech=="Lasso")
+    {
+      if (par_use_interaction==TRUE)
+        formRL<-as.formula(paste0(the_Y,"~.^2"))
+      else
+        formRL<-as.formula(paste0(the_Y,"~."))
+      
+      mat_x_test = model.matrix(formRL,data=par_df_test)[,-1]
+    }
   }
-  else if (model_tech=="RF")
+  else
   {
-    mod_reg<-randomForest(formRL,ntree=250,data=par_df_train)
-  }
-  else if (model_tech=="GB")
-  {
-    mod_reg<-gbm(formRL,data=par_df_train,distribution="gaussian",cv.fold=5,shrinkage=0.01,n.trees=3000)
-    mopt.ada <- gbm.perf(mod_reg,method="cv")
-  }
-  else #by default RLM
-  {
-    mod_reg<-lm(formRL,par_df_train)
+    print(paste0("Training for ",the_Y," with ",model_tech))
+    
+    #work
+    if (par_use_interaction==TRUE)
+      formRL<-as.formula(paste0(the_Y,"~.^2"))
+    else
+      formRL<-as.formula(paste0(the_Y,"~."))
+    
+    ### Selon le type de modèle choisi
+    if (model_tech=="Ridge" | model_tech=="Lasso")
+    {
+      mat_x_train = model.matrix(formRL,data=par_df_train)[,-1]
+      y_train = par_df_train[,the_Y]
+      
+      mat_x_test = model.matrix(formRL,data=par_df_test)[,-1]
+      
+      alphie<-ifelse(model_tech=="Ridge", 0, 1)
+      
+      # Using cross validation glmnet
+      ridge_cv <- cv.glmnet(mat_x_train, y_train, alpha = alphie)
+      
+      # Best lambda value
+      best_lambda <- ridge_cv$lambda.min
+      
+      mod_reg <- glmnet(mat_x_train, y_train, alpha = alphie, lambda = best_lambda)
+    }
+    else if (model_tech=="RF")
+    {
+      mod_reg<-randomForest(formRL,ntree=250,data=par_df_train)
+    }
+    else if (model_tech=="GB")
+    {
+      mod_reg<-gbm(formRL,data=par_df_train,distribution="gaussian",cv.fold=5,shrinkage=0.01,n.trees=3000)
+      mopt.ada <- gbm.perf(mod_reg,method="cv")
+    }
+    else #by default RLM
+    {
+      mod_reg<-lm(formRL,par_df_train)
+    }
   }
   
   #show
-  nom_fichier_sum<-paste0("sum_",par_mod,"_",the_Y,par_sel_mod,".sum")
-  sink(paste(CT_PATH_DATA_OUT,nom_fichier_sum,sep="/"))
+  sink(path_fich_sum)
   print(summary(mod_reg))
   sink()
   
@@ -370,6 +440,7 @@ train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,p
   else if (model_tech=="GB")
   {
     predict_Y <- predict(mod_reg,newdata=par_df_test,n.trees=mopt.ada)
+    #predict_Y <- predict(mod_reg,par_df_test)
   }
   else #by default RLM
   {
@@ -385,6 +456,188 @@ train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,p
   write.csv(res,paste(CT_PATH_DATA_OUT,nom_fichier_pred,sep="/"),row.names=FALSE)
   
   ###########  predicting  ############
+  
+  return (res)
+}
+
+#Créer le modèles et prédire
+train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE,par_use_hourly=FALSE)
+{
+  if (par_use_rds==TRUE) 
+  {
+    print(paste0("Searching RDS model for ",par_Y," with ",par_mod))
+  }
+  else
+  {
+    print(paste0("Training for ",par_Y," with ",par_mod))
+  }
+  
+  if (par_use_hourly==TRUE)
+  {
+    #Every x hours
+    hour_interval=2
+    
+    res<-data.frame(matrix(ncol = 4, nrow = 0))
+    names(res)<-c("Date_Heure_Locale","real","predicted","error")
+    
+    for (indHr in seq(0,23,by=hour_interval))
+    {
+      par_df_train_hr<-par_df_train[par_df_train$Heure_Local>=indHr & par_df_train$Heure_Local<indHr+hour_interval,]
+      par_df_test_hr<-par_df_test[par_df_test$Heure_Local>=indHr & par_df_test$Heure_Local<indHr+hour_interval,]
+      par_var_idx_hr<-par_var_idx[par_df_test$Heure_Local>=indHr & par_df_test$Heure_Local<indHr+hour_interval]
+        
+      #train
+      dynamic_tr_params<-train_it(par_Y,par_df_train_hr,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE)
+      
+      #Update factor
+      #levels(par_df_test_hr$temps_present)<-levels(par_df_train_hr$temps_present)
+      #par_df_test_hr$temps_present<-droplevels(par_df_train_hr$temps_present)
+      
+      #predict
+      res_hr<-predict_it(par_Y,par_var_idx_hr,par_mod,dynamic_tr_params$trained_model,par_df_test_hr,dynamic_tr_params,par_use_interaction)
+      
+      res<-rbind(res,res_hr)
+    }
+  }
+  else
+  {
+    #train
+    dynamic_tr_params<-train_it(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE)
+    
+    #predict
+    res<-predict_it(par_Y,par_var_idx,par_mod,dynamic_tr_params$trained_model,par_df_test,dynamic_tr_params,par_use_interaction)
+  }
+  
+  #Ecrire dans le fichier
+  nom_fichier_pred<-paste0("pred_",par_mod,"_",par_Y,".csv")
+  write.csv(res,paste(CT_PATH_DATA_OUT,nom_fichier_pred,sep="/"),row.names=FALSE)
+  
+  return (res)
+}  
+
+#donne moi les données et je les entraine pour toi
+train_it<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE)
+{
+  ret_info=list()
+  
+  the_Y<-par_Y
+  
+  #Sufix pour la selection du modèle
+  if (par_sel_mod==TRUE)
+  {
+    par_sel_mod<-"msel"
+  }
+  else
+  {
+    par_sel_mod<-""
+  }
+  
+  #Où écrire ou récupérer notre fichier summary
+  nom_fichier_sum<-paste0("sum_",par_mod,"_",the_Y,par_sel_mod,".sum")
+  path_fich_sum<-paste(CT_PATH_DATA_OUT,nom_fichier_sum,sep="/")
+  
+  #Besion de s'etrainer ou on profiter du boulot déjà fait ?, S'il éxiste utilise le !
+  if (par_use_rds==TRUE & file.exists(path_fich_sum)==TRUE) 
+  {
+    #print(paste0("Got RDS model for ",the_Y," with ",par_mod," ",path_fich_sum))
+    mod_reg<-readRDS(path_fich_sum)
+    
+    #particularités des modèles s'il y éxistent
+    if (par_mod=="Ridge" | par_mod=="Lasso")
+    {
+      if (par_use_interaction==TRUE)
+        formRL<-as.formula(paste0(the_Y,"~.^2"))
+      else
+        formRL<-as.formula(paste0(the_Y,"~."))
+      
+      mat_x_test = model.matrix(formRL,data=par_df_test)[,-1]
+    }
+  }
+  else
+  {
+    #print(paste0("Training for ",the_Y," with ",par_mod))
+    
+    #work
+    if (par_use_interaction==TRUE)
+      formRL<-as.formula(paste0(the_Y,"~.^2"))
+    else
+      formRL<-as.formula(paste0(the_Y,"~."))
+    
+    ### Selon le type de modèle choisi
+    if (par_mod=="Ridge" | par_mod=="Lasso")
+    {
+      mat_x_train = model.matrix(formRL,data=par_df_train)[,-1]
+      y_train = par_df_train[,the_Y]
+      
+      alphie<-ifelse(par_mod=="Ridge", 0, 1)
+      
+      # Using cross validation glmnet
+      ridge_cv <- cv.glmnet(mat_x_train, y_train, alpha = alphie)
+      
+      # Best lambda value
+      best_lambda <- ridge_cv$lambda.min
+      ret_info[["best_lambda"]]<-best_lambda
+      
+      mod_reg <- glmnet(mat_x_train, y_train, alpha = alphie, lambda = best_lambda)
+    }
+    else if (par_mod=="RF")
+    {
+      mod_reg<-randomForest(formRL,ntree=250,data=par_df_train)
+    }
+    else if (par_mod=="GB")
+    {
+      mod_reg<-gbm(formRL,data=par_df_train,distribution="gaussian",cv.fold=5,shrinkage=0.01,n.trees=3000)
+      mopt.ada <- gbm.perf(mod_reg,method="cv")
+      ret_info[["mopt.ada"]]<-mopt.ada
+    }
+    else #by default RLM
+    {
+      mod_reg<-lm(formRL,par_df_train)
+    }
+  }
+  
+  #show
+  sink(path_fich_sum)
+  print(summary(mod_reg))
+  sink()
+  
+  #and save
+  nom_fichier_rds<-paste0("mod_",par_mod,"_",the_Y,".rds")
+  saveRDS(mod_reg, file = paste(CT_PATH_DATA_OUT,nom_fichier_rds,sep="/"))
+  
+  ret_info[["trained_model"]]<-mod_reg
+  
+  #return (mod_reg)
+  return (ret_info)
+}
+  
+
+#Donne moi un modèle et les données à prédire et je te donne les prédictions
+predict_it<-function(par_the_Y,par_var_idx,par_mod_tech,par_mod,par_df_test,par_dynamic_params,par_use_interaction=FALSE)
+{
+  ### Selon le type de modèle choisi
+  if (par_mod_tech=="Ridge" | par_mod_tech=="Lasso")
+  {
+    if (par_use_interaction==TRUE)
+      formRL<-as.formula(paste0(par_the_Y,"~.^2"))
+    else
+      formRL<-as.formula(paste0(par_the_Y,"~."))
+    
+    mat_x_test = model.matrix(formRL,data=par_df_test)[,-1]
+    predict_Y <- predict(par_mod, s = par_dynamic_params$best_lambda, mat_x_test)
+  }
+  else if (par_mod_tech=="GB")
+  {
+    predict_Y <- predict(par_mod,newdata=par_df_test,n.trees=par_dynamic_params$mopt.ada)
+  }
+  else #by default RLM
+  {
+    predict_Y <- predict(par_mod,par_df_test)
+  }
+  
+  #We're adding the local date and time as reference for each prediction
+  res<-cbind(Date_Heure_Locale=par_var_idx,real=par_df_test[par_the_Y],predicted=predict_Y,error=round(get_error(par_df_test[par_the_Y],predict_Y),2))
+  names(res)<-c("Date_Heure_Locale","real","predicted","error")
   
   return (res)
 }
