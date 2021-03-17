@@ -35,7 +35,7 @@ modeling<-function(var_mod_cible="particules_fines")
   var_mod_date<-c("Date_Heure_Locale","Timestamp")
   var_mod_quant<-c("co2","Heure_Local","Annee","Mois","Semaine_de_lannee","Jour_de_la_Semaine","pluie_3_heures","temperature_celsius","pression","direction_vent_10mn","temps_present_num","type_tendance_barometrique","vitesse_vent_10mn","nebulosite_totale","temperature","no","no2","humidite","particules_fines","ext_pm25","ext_pm10","ext_o3","ext_no2")
   USE_CARRE<-TRUE #Utiliser aussi les quantitatives au carré 
-  USE_CUBE<-FALSE #Utiliser aussi les quantitatives au cube
+  USE_CUBE<-TRUE #Utiliser aussi les quantitatives au cube
   var_mod2_ext<-c("ext_pm25","ext_pm10","ext_o3","ext_no2")
   var_mod_qual<-c("temps_present")
   var_mod_bool<-c("Conges_Escolaire_Zone_C","Conges_Escolaire_Zone_AB","jour_activite")
@@ -83,6 +83,7 @@ modeling<-function(var_mod_cible="particules_fines")
   #list_var_mods<-c("GB")
   #list_var_mods<-c("RF")
   #list_var_mods<-c("RLM")
+  #list_var_mods<-c("LOG")
   
   #Exécution de l'ensemble des tests
   var_mod_list_Y <- c(var_mod_cible,var_noms_other_cibles)
@@ -103,7 +104,7 @@ modeling<-function(var_mod_cible="particules_fines")
   use_interactions<-FALSE
   
   #24 modèles horaires différentes
-  use_hour_models<-TRUE
+  use_hour_models<-FALSE
   
   ############################################################
   
@@ -461,7 +462,7 @@ train_and_predict_old<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_m
 }
 
 #Créer le modèles et prédire
-train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE,par_use_hourly=FALSE)
+train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE,par_use_hourly=FALSE,par_seuil_pic=0.9)
 {
   if (par_use_rds==TRUE) 
   {
@@ -501,6 +502,13 @@ train_and_predict<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,p
   }
   else
   {
+    #change les données par des pics
+    if (par_mod=="LOG")
+    {
+      par_df_train[,par_Y]=as.numeric(par_df_train[,par_Y]>quantile(par_df_train[,par_Y],par_seuil_pic)[[1]])
+      par_df_test[,par_Y]=as.numeric(par_df_test[,par_Y]>quantile(par_df_test[,par_Y],par_seuil_pic)[[1]])
+    }
+    
     #train
     dynamic_tr_params<-train_it(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mod=FALSE,par_use_rds=FALSE,par_use_interaction=FALSE)
     
@@ -590,6 +598,10 @@ train_it<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mo
       mopt.ada <- gbm.perf(mod_reg,method="cv")
       ret_info[["mopt.ada"]]<-mopt.ada
     }
+    else if(par_mod=="LOG")
+    {
+      mod_reg <- glm(formRL,data=par_df_train,family=binomial)
+    }
     else #by default RLM
     {
       mod_reg<-lm(formRL,par_df_train)
@@ -630,6 +642,10 @@ predict_it<-function(par_the_Y,par_var_idx,par_mod_tech,par_mod,par_df_test,par_
   {
     predict_Y <- predict(par_mod,newdata=par_df_test,n.trees=par_dynamic_params$mopt.ada)
   }
+  else if(par_mod_tech=="LOG")
+  {
+    predict_Y <- predict(par_mod,par_df_test,type="response")
+  }
   else #by default RLM
   {
     predict_Y <- predict(par_mod,par_df_test)
@@ -643,17 +659,48 @@ predict_it<-function(par_the_Y,par_var_idx,par_mod_tech,par_mod,par_df_test,par_
 }
 
 #Obtient l'errerur pour l'ensemble de prédictions
-get_error<-function(par_real,par_predicted)
+get_error<-function(par_real,par_predicted,par_mod)
 {
   ret_err<-abs(par_real-par_predicted)/par_real
+  
   return (ret_err)
 }
 
 #Evaluations des prédictions
 evaluate<-function(par_meth,par_res,par_sel_mod)
 {
-  mape_res<-get_MAPE(par_res)
-  rmse_res<-get_RMSE(par_res)
+  if (par_meth=="LOG")
+  {
+    #confusion matrix
+    predicted<-as.numeric(par_res$predicted>0.5)
+    conf_matrix<-table(predicted,par_res$real)
+    
+    #tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
+    
+    TN = conf_matrix[1,1]
+    FN = conf_matrix[1,2]
+    
+    if (dim(conf_matrix)[1]==1)
+    {
+      FP=0
+      TP=0
+    }
+    else
+    {
+      FP = conf_matrix[2,1]
+      TP = conf_matrix[2,2]
+    }
+    
+    #TP/(TP+FN) Sensitivity
+    mape_res<-TP/(TP+FN)
+    #TP/(TP+FP) Precision
+    rmse_res<-TP/(TP+FP)
+  }
+  else
+  {
+    mape_res<-get_MAPE(par_res)
+    rmse_res<-get_RMSE(par_res)
+  }
   
   ret_eval<-cbind(Methode=par_meth,Sel_Model=par_sel_mod,MAPE=round(mape_res,2),RMSE=round(rmse_res,2))
   
