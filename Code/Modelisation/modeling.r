@@ -18,7 +18,7 @@
 #                                                        #
 ##########################################################
 
-modeling<-function(var_mod_cible="particules_fines")
+modeling<-function(var_mod_cible="co2")
 {
   print("Go modeling !")
   
@@ -34,8 +34,8 @@ modeling<-function(var_mod_cible="particules_fines")
   var_mod_idx<-"Date_Heure_Locale"
   var_mod_date<-c("Date_Heure_Locale","Timestamp")
   var_mod_quant<-c("co2","Heure_Local","Annee","Mois","Semaine_de_lannee","Jour_de_la_Semaine","pluie_3_heures","temperature_celsius","pression","direction_vent_10mn","temps_present_num","type_tendance_barometrique","vitesse_vent_10mn","nebulosite_totale","temperature","no","no2","humidite","particules_fines","ext_pm25","ext_pm10","ext_o3","ext_no2")
-  USE_CARRE<-TRUE #Utiliser aussi les quantitatives au carré 
-  USE_CUBE<-TRUE #Utiliser aussi les quantitatives au cube
+  USE_CARRE<-FALSE #Utiliser aussi les quantitatives au carré 
+  USE_CUBE<-FALSE #Utiliser aussi les quantitatives au cube
   var_mod2_ext<-c("ext_pm25","ext_pm10","ext_o3","ext_no2")
   var_mod_qual<-c("temps_present")
   var_mod_bool<-c("Conges_Escolaire_Zone_C","Conges_Escolaire_Zone_AB","jour_activite")
@@ -77,7 +77,8 @@ modeling<-function(var_mod_cible="particules_fines")
   ################################################################################
   
   #Modeles
-  list_var_mods<-c("RLM","Ridge","Lasso","GB","RF")
+  #list_var_mods<-c("RLM","Ridge","Lasso","GB","RF")
+  list_var_mods<-c("RLM","Ridge","Lasso")
   #list_var_mods<-c("RLM","Ridge","Lasso","RF")
   #list_var_mods<-c("RLM","Ridge","Lasso","GB")
   #list_var_mods<-c("GB")
@@ -104,7 +105,7 @@ modeling<-function(var_mod_cible="particules_fines")
   use_interactions<-FALSE
   
   #24 modèles horaires différentes
-  use_hour_models<-FALSE
+  use_hour_models<-TRUE
   
   ############################################################
   
@@ -582,40 +583,47 @@ train_it<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mo
       # Using cross validation glmnet
       ridge_cv <- cv.glmnet(mat_x_train, y_train, alpha = alphie)
       
+      save_model(par_mod,the_Y,ridge_cv)
+      
       # Best lambda value
       best_lambda <- ridge_cv$lambda.min
       ret_info[["best_lambda"]]<-best_lambda
       
       mod_reg <- glmnet(mat_x_train, y_train, alpha = alphie, lambda = best_lambda)
+      #save_model(par_mod,the_Y,ridge_cv)
     }
     else if (par_mod=="RF")
     {
       mod_reg<-randomForest(formRL,ntree=250,data=par_df_train)
+      save_model(par_mod,the_Y,mod_reg)
     }
     else if (par_mod=="GB")
     {
       mod_reg<-gbm(formRL,data=par_df_train,distribution="gaussian",cv.fold=5,shrinkage=0.01,n.trees=3000)
       mopt.ada <- gbm.perf(mod_reg,method="cv")
       ret_info[["mopt.ada"]]<-mopt.ada
+      save_model(par_mod,the_Y,mod_reg)
     }
     else if(par_mod=="LOG")
     {
       mod_reg <- glm(formRL,data=par_df_train,family=binomial)
+      save_model(par_mod,the_Y,mod_reg)
     }
     else #by default RLM
     {
       mod_reg<-lm(formRL,par_df_train)
+      save_model(par_mod,the_Y,mod_reg)
     }
   }
   
   #show
-  sink(path_fich_sum)
-  print(summary(mod_reg))
-  sink()
+  sink_summary(path_fich_sum,mod_reg)
   
   #and save
-  nom_fichier_rds<-paste0("mod_",par_mod,"_",the_Y,".rds")
-  saveRDS(mod_reg, file = paste(CT_PATH_DATA_OUT,nom_fichier_rds,sep="/"))
+  #save_model(par_mod,the_Y,par_mod_reg)
+  #nom_fichier_rds<-paste0("mod_",par_mod,"_",the_Y,".rds")
+  #saveRDS(mod_reg, file = paste(CT_PATH_DATA_OUT,nom_fichier_rds,sep="/"))
+  
   
   ret_info[["trained_model"]]<-mod_reg
   
@@ -623,6 +631,22 @@ train_it<-function(par_Y,par_df_train,par_df_test,par_var_idx,par_mod,par_sel_mo
   return (ret_info)
 }
   
+#Ecrire modele dans un fichier
+save_model<-function(par_mod,par_Y,par_mod_reg)
+{
+  nom_fichier_rds<-paste0("mod_",par_mod,"_",par_Y,".rds")
+  saveRDS(par_mod_reg, file = paste(CT_PATH_DATA_OUT,nom_fichier_rds,sep="/"))
+}
+
+
+#Ecrire summary dans un fichier
+sink_summary<-function(par_path,par_mod_reg)
+{
+  sink(par_path)
+  print(summary(par_mod_reg))
+  sink()
+}
+
 
 #Donne moi un modèle et les données à prédire et je te donne les prédictions
 predict_it<-function(par_the_Y,par_var_idx,par_mod_tech,par_mod,par_df_test,par_dynamic_params,par_use_interaction=FALSE)

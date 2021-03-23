@@ -11,7 +11,7 @@
 recuperer_calendrier<-function()
 {
   all_the_dates<-seq(as.Date("2013-1-1 00:00:00"),as.Date("2021-1-1"),by="days")
-  dates
+  #dates
   
   as.POSIXct("2016-1-1 3:00")
   
@@ -27,11 +27,11 @@ recuperer_calendrier<-function()
   all_times_sorted<-sort(as.POSIXlt(all_times,tz="GMT"))
   all_times_sorted
   
-  setwd("C://Formation IA//CEPE//Projet//QAIR//Data")
+  #setwd("C://Formation IA//CEPE//Projet//QAIR//Data")
   
   df_all_times<-data.frame(all_times_sorted)
   names(df_all_times)<-"Date"
   df_all_times
   
-  write.csv(df_all_times,"calendrier_date_heures.csv")
+  write.csv(df_all_times,"Data//calendrier_date_heures.csv")
 }

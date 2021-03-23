@@ -16,8 +16,9 @@ recuperer_RATP<-function()
   # dfAux<-fromJSON(urlRATP)
   
   #path where to write file
-  path_2_write="C://Formation IA//CEPE//Projet//QAIR//Data//"
-  file_2_write="RATP_qair_2013_2020.csv"
+  path_2_write<-"C://Formation IA//CEPE//Projet//QAIR//Data//"
+  #path_2_write<-CT_PATH_DATA
+  file_2_write<-"RATP_qair_2013_2020.csv"
   file_qair_RATP=paste(path_2_write,file_2_write,sep="")
   
   #boucle pour r?cup?rer les donn?es

@@ -26,12 +26,12 @@ recuperer_meteo <- function()
   #on s'assure 
   for (anInd in 2013:2019)
   {
-    print(head(donAnnee[[anInd]]),5)
+    #print(head(donAnnee[[anInd]]),5)
   }
   
   for (anInd in 2013:2019)
   {
-    print(dim(donAnnee[[anInd]]))
+    #print(dim(donAnnee[[anInd]]))
   }
   
   ######## pas le meme nombre de colonnes pour 2013 et 2014 mais on peut combiner avec NA (voir quelles colonnes manquent)
@@ -61,9 +61,10 @@ recuperer_meteo <- function()
   summary(donmeteo)
   
   #path where to write file
-  path_2_write = "C:/Users/A56814/Documents/Projet Data Science/metroqualitedelair-main/Data/"
+  #path_2_write = "C:/Users/A56814/Documents/Projet Data Science/metroqualitedelair-main/Data/"
+  path_2_write_aux <- CT_PATH_DATA
   file_2_write = "meteo_2013_2019.csv"
-  file_meteo   = paste(path_2_write,file_2_write,sep="")
+  file_meteo   = paste(path_2_write_aux,file_2_write,sep="//")
   #write.table(donmeteo, file_meteo, row.names = F, sep = ";")
   
   df <- fread(file_meteo)
